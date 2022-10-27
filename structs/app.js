@@ -3,7 +3,7 @@ const path = require('path');
 
 function structApp(buildPath, platform, proc, product) {
   if (platform.packer === 'dpkg') {
-    const pathApp = path.join(buildPath, platform.paths.app);
+    const pathApp = path.join(buildPath, platform.paths.app, product.service);
 
     fs.ensureDirSync(pathApp);
   

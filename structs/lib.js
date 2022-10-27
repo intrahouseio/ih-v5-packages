@@ -3,7 +3,7 @@ const path = require('path');
 
 function structLib(buildPath, platform, proc, product) {
   if (platform.packer === 'dpkg') {
-    const pathLib = path.join(buildPath, platform.paths.lib);
+    const pathLib = path.join(buildPath, platform.paths.lib, product.service);
 
     fs.ensureDirSync(pathLib);
   

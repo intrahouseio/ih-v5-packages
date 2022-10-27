@@ -9,6 +9,9 @@ const structLib = require('./structs/lib');
 const structDocs = require('./structs/docs');
 const structService = require('./structs/service');
 
+const dependencies = require('./dependencies');
+const compilator = require('./compilator');
+
 async function buildProduct(platform, proc, product) {
   console.log('Product:', product.name);
 
@@ -27,6 +30,10 @@ async function buildProduct(platform, proc, product) {
 async function builder(options) {
   const platform = options;
 
+  console.log('Download Dependencies:');
+
+  await dependencies(options);
+
   console.log('Platform:', platform.name);
 
   fs.removeSync(path.join(TEMP_DIR_NAME, platform.name));
@@ -39,6 +46,7 @@ async function builder(options) {
 
     for (const product of platform.products) {
       await buildProduct(platform, proc, product);
+      await compilator(platform, proc, product);
     }
   }
 }

@@ -1,5 +1,5 @@
 const TEMP_DIR_NAME = 'temp';
-const VERSION_EMPTY = '5.11.2';
+const VERSION_EMPTY = '5.11.5';
 
 const PRODUCT_SITES = {
   intrahouse: 'intrahouse.ru',
