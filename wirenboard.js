@@ -8,8 +8,10 @@ const options = {
     { name: 'intrahouse', service: 'intrahouse', project: 'intrahouse.ihpack' },
   ],
   paths: {
-    app: '/opt',
-    lib: '/var/lib',
+    // app: '/opt',
+    // lib: '/var/lib',
+    app: '/mnt/data/opt',
+    lib: '/mnt/data/var/lib',
   },
   processors: [{ arch: 'armhf', target: 'linux-armv7l' }],
   deps: {
