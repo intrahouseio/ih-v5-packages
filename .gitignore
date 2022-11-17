@@ -1,0 +1,11 @@
+/temp
+/build
+/resources
+
+/repository/wirenboard
+/repository/debian
+/repository/versions
+
+*.deb
+package-lock.json
+*.token
