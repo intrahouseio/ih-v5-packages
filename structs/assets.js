@@ -22,8 +22,10 @@ async function structAssets(buildPath, platform, proc, product) {
       const resources = assets[assetType];
   
       for (const resourceId of resources) {
-        fs.ensureDirSync(path.join(process.cwd(), pathAssets, assetType));
-
+        if (!fs.pathExistsSync(path.join(process.cwd(), pathAssets, assetType))) {
+          fs.ensureDirSync(path.join(process.cwd(), pathAssets, assetType));
+        }
+        
         const pathResource = path.join(process.cwd(), 'resources', resourceId, fs.readdirSync(path.join('resources', resourceId))[0]);
         const resourceFile = fs.readdirSync(pathResource).find(item => item.indexOf('.ih') !== -1);
         const resourceName = fs.readJsonSync(path.join(pathResource, resourceFile)).id;
