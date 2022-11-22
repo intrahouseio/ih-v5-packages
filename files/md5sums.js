@@ -1,5 +1,6 @@
 const fs = require('fs-extra');
 const path = require('path');
+const crypto = require('crypto');
 
 function fileMd5sums(buildPath, platform, proc, product) {
   const arrayOfFiles = getAllFiles(path.join(buildPath, 'usr'));
