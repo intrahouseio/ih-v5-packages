@@ -3,12 +3,15 @@ const path = require('path');
 const crypto = require('crypto');
 
 function fileMd5sums(buildPath, platform, proc, product) {
-  const arrayOfFiles = getAllFiles(path.join(buildPath, 'usr'));
+  const files1 = getAllFiles(path.join(buildPath, 'usr'));
+  const files2 = getAllFiles(path.join(buildPath, 'lib'));
+  const files = [...files1, ...files2];
+
   const map = [];
 
-  for (const file of arrayOfFiles) {
+  for (const file of files) {
     const hash = crypto.createHash('md5').update(fs.readFileSync(file)).digest('hex');
-    map.push(hash + ' ' + file.replace(buildPath + '/', ''));
+    map.push(hash + '  ' + file.replace(buildPath + '/', ''));
   }
 
   return (map.join('\n'));
