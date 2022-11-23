@@ -10,7 +10,7 @@ function fileControl(buildPath, platform, proc, product) {
     'Section: misc' + '\n' +
     'Priority: optional' + '\n' +
     'Architecture: ' + proc.arch + '\n' +
-    'Conflicts:' + product.name === 'intrascada' ? 'intrahouse' : 'intrascada' + '\n' +
+    'Conflicts:' + (product.name === 'intrascada' ? 'intrahouse' : 'intrascada') + '\n' +
     'Depends: libatomic1 (>= 4.8), libc6 (>= 2.17), libgcc1 (>= 1:3.5), libstdc++6 (>= 5.2), zip, unzip, rsync' + '\n' +
 //  'Depends: libc6 (>= 2.17), libgcc1 (>= 1:3.4), libstdc++6 (>= 5.2), zip, unzip, rsync' + '\n' +
     'Installed-Size: ' + getTotalSize(path.join(buildPath)) + '\n' +

@@ -43,4 +43,4 @@ print_status "Running \`apt-get update\` for you..."
 
 exec_cmd "apt-get update"
 
-print_status "Run \`sudo apt install -y intrascada\` or \`sudo apt install -y intrahouse\` to install"
+#print_status "Run \`sudo apt install -y intrascada\` or \`sudo apt install -y intrahouse\` to install"
