@@ -15,7 +15,7 @@ function filePostinst(platform, proc, product) {
     'if [ ! -f "' +  pathConfigFile + '" ]; then' + '\n' +
     `  mkdir -p ${pathConfig}` + '\n' +
     `  echo '` + config + `' > "` + pathConfigFile + '"' + '\n' +
-    'fi' + '\n\n' +
+    'fi' + '\n' +
     'if [ ! -n "$IH_SERVICE_ACTIVE" ]; then' + '\n' +
     '  deb-systemd-invoke enable ' + product.service + '.service > /dev/null 2>&1' + '\n' +
     '  deb-systemd-invoke restart ' + product.service + '.service > /dev/null 2>&1' + '\n' +
