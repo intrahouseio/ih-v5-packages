@@ -14,7 +14,7 @@ async function structRepo(repoPath, platform) {
   fs.removeSync(path.join(cwd));
 
   fs.ensureDirSync(path.join(cwd));
-  fs.ensureDirSync(path.join(cwd, 'pool', 'main'));
+  fs.ensureDirSync(path.join(cwd, 'pool', 'stable'));
   fs.ensureDirSync(path.join(cwd, 'dists', 'stable', 'main'));
 
   fs.writeFileSync(path.join(cwd, 'release.conf'), fileRelease(platform), 'utf8');
@@ -23,7 +23,7 @@ async function structRepo(repoPath, platform) {
   for (const file in platform.files) {
     const { product, version, proc } = platform.files[file];
 
-    const dir = path.join(cwd, 'pool', 'main', product, version);
+    const dir = path.join(cwd, 'pool', 'stable', product, version);
     const name = `${product}_${version}_${proc}.deb`;
 
     const stat = fs.statSync(file);
@@ -49,7 +49,7 @@ async function structRepo(repoPath, platform) {
     fs.removeSync(path.join(cwd, 'dists', 'stable', 'main', 'binary-' + arch, 'Packages.gz'));
     fs.removeSync(path.join(cwd, 'dists', 'stable', 'main', 'binary-' + arch, 'Release'));
   
-    await cmd_exec(`apt-ftparchive --arch ${arch} packages ${path.join('pool', 'main')} > ${path.join(cwd, 'dists', 'stable', 'main', 'binary-' + arch, 'Packages')}`, cwd);
+    await cmd_exec(`apt-ftparchive --arch ${arch} packages ${path.join('pool', 'stable')} > ${path.join(cwd, 'dists', 'stable', 'main', 'binary-' + arch, 'Packages')}`, cwd);
     await cmd_exec(`gzip -fk ${path.join(cwd, 'dists', 'stable', 'main', 'binary-' + arch, 'Packages')} > ${path.join(cwd, 'dists', 'stable', 'main', 'binary-' + arch, 'Packages.gz')}`, cwd);
     await cmd_exec(`apt-ftparchive release ${path.join('dists', 'stable', 'main', 'binary-' + arch)} > ${path.join(cwd, 'dists', 'stable', 'main', 'binary-' + arch, 'Release')}`, cwd);
   }

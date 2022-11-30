@@ -37,10 +37,10 @@ async function main() {
 
   for (const platform of fs.readdirSync(path.join(REPO_DIR_NAME))) {
     if (fs.statSync(path.join(REPO_DIR_NAME, platform)).isDirectory()) {
-      if (fs.existsSync(path.join(REPO_DIR_NAME, platform, 'pool', 'main'))) {
-        for (const _product of fs.readdirSync(path.join(REPO_DIR_NAME, platform, 'pool', 'main'))) {
-          for (const _version of fs.readdirSync(path.join(REPO_DIR_NAME, platform, 'pool', 'main', _product))) {
-            for (const file of fs.readdirSync(path.join(REPO_DIR_NAME, platform, 'pool', 'main', _product, _version))) {
+      if (fs.existsSync(path.join(REPO_DIR_NAME, platform, 'pool', 'stable'))) {
+        for (const _product of fs.readdirSync(path.join(REPO_DIR_NAME, platform, 'pool', 'stable'))) {
+          for (const _version of fs.readdirSync(path.join(REPO_DIR_NAME, platform, 'pool', 'stable', _product))) {
+            for (const file of fs.readdirSync(path.join(REPO_DIR_NAME, platform, 'pool', 'stable', _product, _version))) {
               const ext = path.extname(file);
               const params = file.replace(ext, '').split('_');
               const [product, version, proc] = params;
@@ -50,13 +50,13 @@ async function main() {
               }
     
               if (versions[product][platform + '_' + proc] === undefined) {
-                versions[product][platform + '_' + proc] = { version, url: `${DEB_URL}/${platform}/pool/main/${file}` };
+                versions[product][platform + '_' + proc] = { version, url: `${DEB_URL}/${platform}/pool/stable/${product}/${version}/${file}` };
               } else {
                 const a = versions[product][platform + '_' + proc].version.split('.');
                 const b = version.split('.');
     
                 if (b[0]*100+b[1]*10+b[2] > a[0]*100+a[1]*10+a[2]) {
-                  versions[product][platform + '_' + proc] = { version, url: `${DEB_URL}/${platform}/pool/main/${file}` };
+                  versions[product][platform + '_' + proc] = { version, url: `${DEB_URL}/${platform}/pool/stable/${product}/${version}/${file}` };
                 }
               }
             }
