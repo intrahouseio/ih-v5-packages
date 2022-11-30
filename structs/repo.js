@@ -23,8 +23,10 @@ async function structRepo(repoPath, platform) {
   for (const file in platform.files) {
     const { product, version, proc } = platform.files[file];
     const name = `${product}_${version}_${proc}.deb`;
+    const stat = fs.statSync(file);
 
     fs.copySync(file, path.join(cwd, 'pool', 'main', name));
+    fs.utimesSync(path.join(cwd, 'pool', 'main', name), stat.atime, stat.mtime)
   }
 
   console.log('   ' + 'create packages/release files...');
