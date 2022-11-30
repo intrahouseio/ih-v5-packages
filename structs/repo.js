@@ -63,6 +63,7 @@ async function structRepo(repoPath, platform) {
   console.log('   ' + 'create main release file...');
 
   await cmd_exec(`apt-ftparchive release -c ${path.join('release.conf')} ${path.join('dists', 'stable')} > ${path.join(cwd, 'dists', 'stable', 'Release')}`, cwd);
+  fs.removeSync(path.join(cwd, 'release.conf'));
   
   console.log('   ' + 'sign gpg/release files...');
 
