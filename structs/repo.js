@@ -22,14 +22,16 @@ async function structRepo(repoPath, platform) {
   console.log('   ' + 'create deb files...');
   for (const file in platform.files) {
     const { product, version, proc } = platform.files[file];
+
+    const dir = path.join(cwd, 'pool', 'main', product, version);
     const name = `${product}_${version}_${proc}.deb`;
+
     const stat = fs.statSync(file);
-    const filePath = path.join(cwd, 'pool', 'main', product, version, name);
 
-    fs.mkdirSync(filePath, { recursive: true });
+    fs.ensureDirSync(dir);
 
-    fs.copySync(file, filePath);
-    fs.utimesSync(filePath, stat.atime, stat.mtime)
+    fs.copySync(file, path.join(dir, name));
+    fs.utimesSync(path.join(dir, name), stat.atime, stat.mtime)
   }
 
   console.log('   ' + 'create packages/release files...');
