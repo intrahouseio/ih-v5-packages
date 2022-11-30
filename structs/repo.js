@@ -31,6 +31,8 @@ async function structRepo(repoPath, platform) {
     fs.ensureDirSync(dir);
 
     fs.copySync(file, path.join(dir, name));
+
+    fs.utimesSync(dir, stat.atime, stat.mtime)
     fs.utimesSync(path.join(dir, name), stat.atime, stat.mtime)
   }
 
