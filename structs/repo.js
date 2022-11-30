@@ -26,7 +26,7 @@ async function structRepo(repoPath, platform) {
     const stat = fs.statSync(file);
     const filePath = path.join(cwd, 'pool', 'main', product, version, name);
 
-    fs.ensureDirSync(filePath);
+    fs.mkdirSync(filePath, { recursive: true });
 
     fs.copySync(file, filePath);
     fs.utimesSync(filePath, stat.atime, stat.mtime)
