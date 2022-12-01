@@ -5,7 +5,7 @@ const options = {
   packer: 'dpkg',
   products: [
     { name: 'intrascada', service: 'intrascada', project: 'intrascada_wb.ihpack' },
-    { name: 'intrahouse', service: 'intrahouse', project: 'intrahouse.ihpack' },
+    { name: 'intrahouse', service: 'intrahouse', project: 'intrahouse_wb.ihpack' },
   ],
   paths: {
     app: '/usr/bin',
