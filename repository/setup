@@ -25,6 +25,11 @@ if grep -qs "ubuntu" "/etc/os-release"; then
   title="Ubuntu"
 fi
 
+if grep -qs "astra" "/etc/os-release"; then
+  repo="astralinux"
+  title="AstraLinux"
+fi
+
 if grep -qs "raspberry" "/proc/device-tree/compatible"; then
   repo="raspberry"
   title="Raspberry"
