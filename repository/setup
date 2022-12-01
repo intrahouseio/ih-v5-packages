@@ -13,12 +13,22 @@ exec_cmd() {
     exec_cmd_nobail "$1" || bail
 }
 
-title="Debian/Ubuntu"
+title="Debian"
 repo="debian"
 name="ih-systems"
 keyring="/usr/share/keyrings"
 key_url="http://deb.ih-systems.com/ih-systems.gpg"
 local_key="$keyring/ih-systems.gpg"
+
+if grep -qs "ubuntu" "/etc/os-release"; then
+  repo="ubuntu"
+  title="Ubuntu"
+fi
+
+if grep -qs "raspberry" "/proc/device-tree/compatible"; then
+  repo="raspberry"
+  title="Raspberry"
+fi
 
 if grep -qs "wirenboard" "/proc/device-tree/compatible"; then
   repo="wirenboard"
