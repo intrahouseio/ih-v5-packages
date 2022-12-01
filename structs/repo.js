@@ -30,10 +30,10 @@ async function structRepo(repoPath, platform) {
 
     fs.ensureDirSync(dir);
 
-    fs.copySync(file, path.join(dir, name));
-
+    // fs.copySync(file, path.join(dir, name));
+    fs.symlinkSync(file, path.join(dir, name), 'file');
     fs.utimesSync(dir, stat.atime, stat.mtime)
-    fs.utimesSync(path.join(dir, name), stat.atime, stat.mtime)
+    // fs.utimesSync(path.join(dir, name), stat.atime, stat.mtime)
   }
 
   console.log('   ' + 'create packages/release files...');
