@@ -1,10 +1,10 @@
 const path = require('path');
 
-function filePrerm(platform, proc, product) {
+function filePostrm(platform, proc, product) {
   return (
     `#!/bin/bash` + '\n' +
     'set -e' + '\n' +
-    'if [ "$1" == "remove" ]; then' + '\n' +
+    'if [ "$1" == "purge" ]; then' + '\n' +
     '  deb-systemd-invoke stop ' + product.service + '.service > /dev/null 2>&1' + '\n' +
     '  deb-systemd-invoke disable ' + product.service + '.service > /dev/null 2>&1' + '\n' +
     '  rm -Rf ' + path.join(platform.paths.lib, product.service) + ' > /dev/null 2>&1' + '\n' +
@@ -14,4 +14,4 @@ function filePrerm(platform, proc, product) {
   );
 }
 
-module.exports = filePrerm;
+module.exports = filePostrm;
