@@ -13,7 +13,7 @@ async function structAssets(buildPath, platform, proc, product) {
       fs.ensureDirSync(path.join(process.cwd(), pathAssets, 'projects'));
 
       await zip(path.join(process.cwd(), 'resources', product.project), path.join(process.cwd(), pathAssets, 'projects', 'demo_project' + '.ihpack'));
-      await zip(path.join(process.cwd(), 'resources', product.project), path.join(process.cwd(), pathAssets, 'projects', 'project' + '.ihpack'));
+      // await zip(path.join(process.cwd(), 'resources', product.project), path.join(process.cwd(), pathAssets, 'projects', 'project' + '.ihpack'));
     }
 
     const assets = platform.assets;
