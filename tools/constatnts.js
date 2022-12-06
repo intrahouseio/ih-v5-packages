@@ -10,7 +10,7 @@ const PRODUCT_SITES = {
   intrascada: 'intrascada.com',
 };
 const PRODUCT_DESCRIPTIONS = {
-  intrahouse: 'Software platform for Smart Home systems',
+  intrahouse: 'Software platform\n for Smart Home systems',
   intrascada: 'Open and scalable platform\n for industrial monitoring and control systems',
 };
 
