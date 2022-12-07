@@ -44,6 +44,12 @@ async function structRepo(repoPath, platform) {
     }
   }
 
+  if (platform.processors['arm64']) {
+    if (!platform.processors['armhf']) {
+      platform.processors['armhf'] = true;
+    }
+  }
+
   for (const arch in platform.processors) {
     fs.ensureDirSync(path.join(cwd, 'dists', 'stable', 'main', 'binary-' + arch));
     
