@@ -40,7 +40,7 @@ if grep -qs "wirenboard" "/proc/device-tree/compatible"; then
   title="Wiren Board"
 fi
 
-if grep -qs "wirenboard" "/proc/device-tree/compatible"; then
+if grep -qs "jethome" "/proc/device-tree/compatible"; then
   repo="jethome"
   title="JetHome"
 fi
