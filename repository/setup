@@ -13,8 +13,8 @@ exec_cmd() {
     exec_cmd_nobail "$1" || bail
 }
 
-title="Debian"
 repo="debian"
+title="Debian"
 name="ih-systems"
 keyring="/usr/share/keyrings"
 key_url="http://deb.ih-systems.com/ih-systems.gpg"
@@ -27,7 +27,7 @@ fi
 
 if grep -qs "astra" "/etc/os-release"; then
   repo="astralinux"
-  title="AstraLinux"
+  title="Astra Linux"
 fi
 
 if grep -qs "raspberry" "/proc/device-tree/compatible"; then
@@ -37,7 +37,12 @@ fi
 
 if grep -qs "wirenboard" "/proc/device-tree/compatible"; then
   repo="wirenboard"
-  title="Wirenboard"
+  title="Wiren Board"
+fi
+
+if grep -qs "wirenboard" "/proc/device-tree/compatible"; then
+  repo="jethome"
+  title="JetHome"
 fi
 
 print_status "Installing the ${name} repo on ${title}."
