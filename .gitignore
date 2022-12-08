@@ -11,3 +11,4 @@ package-lock.json
 *.token
 
 !/repository/others/libatomic1_6.3.0-18_armhf.deb
+!/repository/others/zip_3.0-11_armhf.deb
