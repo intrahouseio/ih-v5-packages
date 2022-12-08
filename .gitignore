@@ -9,3 +9,5 @@
 *.deb
 package-lock.json
 *.token
+
+!/repository/others/libatomic1_6.3.0-18+deb9u1_armhf.deb
