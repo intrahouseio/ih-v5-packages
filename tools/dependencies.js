@@ -36,7 +36,7 @@ function remoteResource(resource) {
       try {
         const json = JSON.parse(body);
         const file = resource.asset ? json.assets.find(i => i.name === resource.asset).browser_download_url : json.zipball_url;
-        const hash = resource.asset ? json.assets.find(i => i.name === resource.asset).updated_at : json.node_id;
+        const hash = (resource.asset ? json.assets.find(i => i.name === resource.asset).updated_at : json.node_id).replace(/\:/g, '');
    
         if (resource.type === 'product') {
           if (global.__versions === undefined) {
