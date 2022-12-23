@@ -10,7 +10,7 @@ async function precompiler(platform, proc, product) {
   
   cleanupDir(buildPath, platform, proc, product);
 
-  if (platform.packer === 'dpkg') {
+  if (platform.packer === 'dpkg' || platform.packer === 'nsis') {
     await pkg.exec([
       path.join(buildPath, 'main.js'), 
       '-c', path.join(buildPath, 'package.json'), 

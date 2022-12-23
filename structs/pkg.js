@@ -5,7 +5,7 @@ const filePackage = require('../files/package');
 const fileMain = require('../files/main');
 
 async function structPKG(buildPath, platform, proc, product) {
-  if (platform.packer === 'dpkg') {
+  if (platform.packer === 'dpkg' || platform.packer === 'nsis') {
     const pathPkg = path.join(buildPath, 'pkg');
 
     fs.ensureDirSync(pathPkg);

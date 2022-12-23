@@ -4,7 +4,7 @@ const archiver = require('archiver');
 const { cleanupDir } = require('../tools/cleanup');
 
 async function structAssets(buildPath, platform, proc, product) {
-  if (platform.packer === 'dpkg') {
+  if (platform.packer === 'dpkg' || platform.packer === 'nsis') {
     const pathAssets = path.join(buildPath, platform.paths.assets, product.service);
 
     fs.ensureDirSync(pathAssets);

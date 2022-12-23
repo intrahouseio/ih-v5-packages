@@ -61,7 +61,7 @@ function cleanupFile(file, stat, targetPath, platform, proc, product) {
   const isNodeModules = targetPath.indexOf('node_modules') !== -1;
   
   if (isNodeModules) {
-    if (ext === '.node' || ext === '.o') {
+    if (ext === '.node' || ext === '.o' || (ext === '.exe' && platform.name === 'windows')) {
       const info = parseExecutableFile(path.join(targetPath, file));
       
       if (info && info.target !== proc.target) {
@@ -69,18 +69,8 @@ function cleanupFile(file, stat, targetPath, platform, proc, product) {
       }
     }
 
-    /*
-    
-    if (
-      ext === '.gz' || ext === '.tgz' || ext === '.html' || 
-      ext === '.lib' || ext === '.md' || ext === '.ts' ||
-      ext === '.DOCS' || ext === '.map' || ext === '.txt'
-    ) {
-      fs.removeSync(path.join(targetPath, file)); 
-    }
-    */
 
-    if (ext === '.js' || ext === '.json' || ext === '.node' || ext === '.o' || ext === '.ih' || ext === '.ihpack' || ext === 'woff2') {
+    if (ext === '.js' || ext === '.json' || ext === '.node' || ext === '.o' || (ext === '.exe' && platform.name === 'windows') || ext === '.ih' || ext === '.ihpack' || ext === 'woff2') {
    
     } else { 
       fs.removeSync(path.join(targetPath, file)); 
