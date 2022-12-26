@@ -70,7 +70,7 @@ function cleanupFile(file, stat, targetPath, platform, proc, product) {
     }
 
 
-    if (ext === '.js' || ext === '.json' || ext === '.node' || ext === '.o' || (ext === '.exe' && platform.name === 'windows') || ext === '.ih' || ext === '.ihpack' || ext === 'woff2') {
+    if (ext === '.js' || ext === '.json' || ext === '.node' || ext === '.o' || (ext === '.exe' && platform.name === 'windows') || (ext === '.dll' && platform.name === 'windows') || ext === '.ih' || ext === '.ihpack' || ext === 'woff2') {
    
     } else { 
       fs.removeSync(path.join(targetPath, file)); 
