@@ -4,6 +4,7 @@ const zlib = require('zlib');
 
 const fileLintian = require('../files/lintian');
 const fileCopyright = require('../files/copyright');
+const fileLicense = require('../files/license');
 const fileChangelog = require('../files/changelog');
 const fileHelp = require('../files/help');
 
@@ -57,7 +58,9 @@ async function structDocs(buildPath, platform, proc, product) {
   }
 
   if (platform.packer === 'nsis') {
-
+    const pathApp = path.join(buildPath, platform.paths.app);
+    
+    fs.writeFileSync(path.join(pathApp, 'license.txt'), fileLicense(platform, proc, product));
   } 
 }
 

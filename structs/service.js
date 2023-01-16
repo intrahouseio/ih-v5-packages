@@ -13,7 +13,12 @@ async function structService(buildPath, platform, proc, product) {
   }
 
   if (platform.packer === 'nsis') {
+    const pathService = path.join(buildPath, platform.paths.app, 'daemon');
 
+    fs.ensureDirSync(pathService);
+
+    fs.copyFileSync(path.join('lib', 'daemon', 'daemon.exe'), path.join(pathService, product.service + '.exe'));
+    fs.copyFileSync(path.join('lib', 'daemon', 'daemon.exe.config'), path.join(pathService, product.service + '.exe.config'));
   } 
 }
 

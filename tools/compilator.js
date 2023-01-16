@@ -35,6 +35,30 @@ async function compilator(platform, proc, product) {
       });
     });
   }
+
+  if (platform.packer === 'nsis') {
+    return new Promise((resolve, reject) => {
+      const cwd = buildPath;
+      const cp = spawn('C:\\Program Files (x86)\\NSIS\\makensis.exe', ['setup.nsi'], { cwd });
+
+      cp.stdout.on('data', function(data) {
+        console.log(data.toString());
+      });
+    
+      cp.stderr.on('data', function(data) {
+        console.log(data.toString());
+      });
+    
+      cp.on('exit', function(code) {
+        const version = global.__versions ? global.__versions[product.name] : VERSION_EMPTY;
+        const src = path.join(buildPath, 'setup' + '.exe');
+        const dst = path.join(process.cwd(), 'build', `${platform.name}_${product.name}_${version}_${proc.arch}.exe`);
+  
+        fs.moveSync(src, dst, { overwrite: true });
+        resolve();
+      });
+    });
+  }
 }
 
 module.exports = compilator;

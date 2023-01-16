@@ -4,16 +4,13 @@ const options = {
   name: 'windows',
   packer: 'nsis',
   products: [
-    { name: 'intrascada', service: 'intrascada', project: 'intrascada.ihpack' },
-    { name: 'intrahouse', service: 'intrahouse', project: 'intrahouse.ihpack' },
+    { name: 'intrascada', service: 'intrascada', label: 'IntraSCADA', project: 'intrascada.ihpack' },
+    { name: 'intrahouse', service: 'intrahouse', label: 'IntraHouse', project: 'intrahouse.ihpack' },
   ],
   paths: {
-    app: '/usr/bin',
-    lib: '/var/lib',
-    assets: '/usr/share',
-    wd: '/etc',
-    log: '/var/log',
-    temp: '/var/lib',
+    app: '/app',
+    assets: '/app/assets',
+    tools: '/app/tools',
   },
   processors: [
     { arch: 'x64', target: 'win-x64' },

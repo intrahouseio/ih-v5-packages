@@ -10,6 +10,7 @@ const structAssets = require('../structs/assets');
 const structLib = require('../structs/lib');
 const structDocs = require('../structs/docs');
 const structService = require('../structs/service');
+const structTools = require('../structs/tools');
 
 const dependencies = require('./dependencies');
 const precompiler = require('./precompiler');
@@ -33,6 +34,7 @@ async function production(platform, proc, product) {
   /// structLib(buildPath, platform, proc, product);
   await structDocs(buildPath, platform, proc, product);
   await structService(buildPath, platform, proc, product);
+  await structTools(buildPath, platform, proc, product);
 
   await structPacker(buildPath, platform, proc, product);
 }
@@ -59,7 +61,7 @@ async function builder(options) {
 
       await preparation(platform, proc, product);
       await precompiler(platform, proc, product);
-      
+    
       await production(platform, proc, product);
       await compilator(platform, proc, product);
     }

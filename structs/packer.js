@@ -7,6 +7,8 @@ const filePostinst = require('../files/postinst');
 const filePostrm = require('../files/postrm');
 const filePrerm = require('../files/prerm');
 
+const fileSetupNSI = require('../files/setupNSI');
+
 async function structPacker(buildPath, platform, proc, product) {
   if (platform.packer === 'dpkg') {
     fs.ensureDirSync(path.join(buildPath, 'DEBIAN'));
@@ -20,7 +22,7 @@ async function structPacker(buildPath, platform, proc, product) {
   }
 
   if (platform.packer === 'nsis') {
-
+    fs.writeFileSync(path.join(buildPath, 'setup.nsi'), fileSetupNSI(buildPath, platform, proc, product));
   } 
 }
 

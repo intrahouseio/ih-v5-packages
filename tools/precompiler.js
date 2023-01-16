@@ -1,5 +1,9 @@
 const path = require('path');
+const fs = require('fs-extra');
 const pkg = require('pkg');
+const spawn = require('child_process').spawn;
+
+const fileVersion = require('../files/version');
 
 const { cleanupDir } = require('./cleanup');
 
@@ -18,6 +22,32 @@ async function precompiler(platform, proc, product) {
       '-o', path.join(buildPath, product.name),
     ]);
   }
+
+  if (platform.packer === 'nsis') {
+    fs.writeFileSync(path.join(buildPath, 'version.rc'), fileVersion(platform, proc, product));
+
+    await hr(buildPath, `-open version.rc -save version.res -action compile`);
+    await hr(buildPath, `-open ${product.service}.exe -save ${product.service}_production.exe -action addoverwrite -resource version.res`);
+  }
+}
+
+function hr(buildPath, command) {
+  return new Promise((resolve, reject) => {
+    const cwd = buildPath;
+    const cp = spawn(path.join(process.cwd(), 'lib', 'bin', 'rh.exe'), command.split(' '), { cwd });
+
+    cp.stdout.on('data', function(data) {
+      console.log(data.toString());
+    });
+  
+    cp.stderr.on('data', function(data) {
+      console.log(data.toString());
+    });
+  
+    cp.on('exit', function(code) {
+      resolve();
+    });
+  });
 }
 
 module.exports = precompiler;
