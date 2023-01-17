@@ -5,6 +5,8 @@
 /repository/wirenboard
 /repository/debian
 /repository/versions
+/repository/jethome
+/repository2
 
 *.deb
 package-lock.json
