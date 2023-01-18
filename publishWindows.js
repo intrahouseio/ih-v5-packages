@@ -9,6 +9,8 @@ const files = {};
 
 let remoteVersions = {};
 
+const token = fs.readFileSync(path.join(process.cwd(), 'nginx.token'), 'utf8');
+
 async function main() {
   console.log('Local versions:\n');
 
@@ -68,27 +70,27 @@ async function main() {
         isUpload = true;
         const task = files[product][version];
         console.log(task.name)
-        await upload(task.name, task.file)
+        await upload(task.name, product, task.file)
       }
     }
   }
 
   if (isUpload) {
     console.log('...update versions file')
-    await upload('versions', versions)
+    await upload('versions', 'versions', versions)
   } else {
     console.log('Everything up-to-date')
   }
 }
 
-function upload(name, file) {
+function upload(name, product, file) {
   return new Promise((resolve, reject) => {
     const postData = typeof file === 'string' ? fs.readFileSync(file) : JSON.stringify(file, null, 2);
-
+    console.log(`/upload/${token}/${product}/${name}`)
     const options = {
       hostname: 'windows.ih-systems.com',
       port: 80,
-      path: '/upload/2122e787-1e8b-4306-9cc7-b60d8d54ce91/' + name,
+      path: `/upload/${token}/${product}/${name}`,
       method: 'PUT',
       headers: {
         'Content-Length': postData.length
