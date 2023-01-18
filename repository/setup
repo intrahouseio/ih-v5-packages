@@ -49,6 +49,8 @@ print_status "Installing the ${name} repo on ${title}."
 
 print_status "Adding the ${name} signing key to your keyring..."
 
+mkdir -p "$keyring"
+
 if [ -x /usr/bin/curl ]; then
   exec_cmd "curl -s $key_url > $local_key"
 else
