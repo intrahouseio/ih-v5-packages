@@ -9,10 +9,16 @@ const PRODUCT_SITES = {
   intrahouse: 'intrahouse.ru',
   intrascada: 'intrascada.com',
 };
+
 const PRODUCT_DESCRIPTIONS = {
   intrahouse: 'Software platform\n for Smart Home systems',
   intrascada: 'Open and scalable platform\n for industrial monitoring and control systems',
 };
+
+const PRODUCT_TELEGRAM = {
+  intrahouse: 'https://t.me/intraHouse',
+  intrascada: 'https://t.me/IntraSCADA',
+}
 
 module.exports = {
   TEMP_DIR_NAME,
@@ -20,5 +26,6 @@ module.exports = {
   DEB_URL,
   VERSION_EMPTY,
   PRODUCT_SITES,
-  PRODUCT_DESCRIPTIONS
+  PRODUCT_DESCRIPTIONS,
+  PRODUCT_TELEGRAM
 }
