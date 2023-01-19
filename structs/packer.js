@@ -4,7 +4,7 @@ const path = require('path');
 const fileMd5sums = require('../files/md5sums');
 const fileControl = require('../files/control');
 const filePostinst = require('../files/postinst');
-const filePreinst  = require('../files/postinst');
+const filePreinst  = require('../files/preinst');
 const filePostrm = require('../files/postrm');
 const filePrerm = require('../files/prerm');
 
