@@ -6,6 +6,8 @@ const unzipper = require('unzipper');
 const tar = require('tar');
 const zlib = require('zlib');
 
+const isBeta = process.argv.includes('--beta');
+
 function remoteResource(resource) {
   const headers =  { 'User-Agent': 'Mozilla/5.0' };
 
@@ -79,6 +81,38 @@ function remoteResource(resource) {
   });
 }
 
+function remoteResourceBeta(resource) {
+  return new Promise((resolve, reject) => {
+    request({ url: `https://update.ih-systems.com/restapi/version?id=${resource.id}` }, async (err, res, body) => {
+      try {
+        const json = JSON.parse(body);
+
+        console.log(resource.type, resource.file, '...');
+
+        if (global.__versions === undefined) {
+          global.__versions = {};
+        }
+
+        global.__versions[resource.id] = json.data.payload.beta_version;
+
+        if (fs.pathExistsSync(path.join('resources', resource.file))) {
+          await fs.remove(path.join('resources', resource.file));
+        }
+
+        request.get({ url: json.data.payload.beta_url })
+          .pipe(unzipper.Extract({ path: path.join('resources', resource.file ) }))
+          .on('finish', () => {
+            console.log(resource.type, resource.file, 'ok');
+            resolve();
+          });   
+      } catch (e) {
+        console.log(e);
+        reject(e);
+      }
+    });
+  });
+}
+
 async function dependencies(options) {
   const projects = {};
 
@@ -124,13 +158,15 @@ async function dependencies(options) {
 
   fs.ensureDirSync(path.join('resources'))
 
-  // await remoteResource({ id: 'linux-x64', type: 'node', repo: 'ih-v5', tag: 'v0.0.0', asset: 'node-linux-x64.tar.gz', zip: 'tgz' });
-  // await remoteResource({ id: 'linux-arm64', type: 'node', repo: 'ih-v5', tag: 'v0.0.0', asset: 'node-linux-arm64.tar.gz', zip: 'tgz' });
-  // await remoteResource({ id: 'linux-armv7', type: 'node', repo: 'ih-v5', tag: 'v0.0.0', asset: 'node-linux-armv7l.tar.gz', zip: 'tgz' });
-  // await remoteResource({ id: 'win-x64', type: 'node', repo: 'ih-v5', tag: 'v0.0.0', asset: 'node-win-x64.zip' });
-
-  await remoteResource({ id: 'intrahouse', type: 'product', repo: 'ih-v5', asset: 'intrahouse.zip' });
-  await remoteResource({ id: 'intrascada', type: 'product', repo: 'ih-v5', asset: 'intrascada.zip' });
+  if (isBeta) {
+    await remoteResourceBeta({ id: 'intrahouse_v5', type: 'product', file: 'intrahouse_beta' });
+    await remoteResourceBeta({ id: 'intrascada_v5', type: 'product', file: 'intrascada_beta' });
+  
+  } else {
+    await remoteResource({ id: 'intrahouse', type: 'product', repo: 'ih-v5', asset: 'intrahouse.zip' });
+    await remoteResource({ id: 'intrascada', type: 'product', repo: 'ih-v5', asset: 'intrascada.zip' });
+  
+  }
 
   await remoteResource({ id: 'node_modules', type: 'npm', repo: 'ih-v5', tag: 'v0.0.0', asset: 'node_modules_v2.zip' });
 

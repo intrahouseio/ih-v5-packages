@@ -6,6 +6,8 @@ const { cleanupDir } = require('./cleanup');
 
 const { VERSION_EMPTY, TEMP_DIR_NAME } = require('./constatnts');
 
+const isBeta = process.argv.includes('--beta');
+
 async function compilator(platform, proc, product) {
   const rootPath = path.join(TEMP_DIR_NAME, platform.name, proc.arch);
   const buildPath = path.join(process.cwd(), TEMP_DIR_NAME, platform.name, proc.arch, product.name);
@@ -28,7 +30,7 @@ async function compilator(platform, proc, product) {
       cp.on('exit', function(code) {
         const version = global.__versions ? global.__versions[product.name] : VERSION_EMPTY;
         const src = path.join(process.cwd(), rootPath, product.name + '.deb');
-        const dst = path.join(process.cwd(), 'build', `${platform.name}_${product.name}_${version}_${proc.arch}.deb`);
+        const dst = path.join(process.cwd(), (isBeta ? 'build_beta' : 'build'), `${platform.name}_${product.name}_${version}_${proc.arch}.deb`);
   
         fs.moveSync(src, dst, { overwrite: true });
         resolve();

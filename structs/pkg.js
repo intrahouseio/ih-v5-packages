@@ -4,6 +4,8 @@ const path = require('path');
 const filePackage = require('../files/package');
 const fileMain = require('../files/main');
 
+const isBeta = process.argv.includes('--beta');
+
 async function structPKG(buildPath, platform, proc, product) {
   if (platform.packer === 'dpkg' || platform.packer === 'nsis') {
     const pathPkg = path.join(buildPath, 'pkg');
@@ -13,7 +15,7 @@ async function structPKG(buildPath, platform, proc, product) {
     fs.ensureDirSync(path.join(pathPkg, 'tools'));
     fs.ensureDirSync(path.join(pathPkg, 'plugins'));
 
-    fs.copySync(path.join('resources', product.name), pathPkg);
+    fs.copySync(path.join('resources', isBeta ? product.name + '_beta' : product.name), pathPkg);
     fs.copySync(path.join('resources', 'node_modules'), path.join(pathPkg, 'backend', 'node_modules'));
 
     const deps = platform.deps[product.name];
