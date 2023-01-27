@@ -83,7 +83,7 @@ function remoteResource(resource) {
 
 function remoteResourceBeta(resource) {
   return new Promise((resolve, reject) => {
-    request({ url: `https://update.ih-systems.com/restapi/version?id=${resource.id}` }, async (err, res, body) => {
+    request({ url: `https://update.ih-systems.com/restapi/version?id=${resource.id}_v5` }, async (err, res, body) => {
       try {
         const json = JSON.parse(body);
 
@@ -159,8 +159,8 @@ async function dependencies(options) {
   fs.ensureDirSync(path.join('resources'))
 
   if (isBeta) {
-    await remoteResourceBeta({ id: 'intrahouse_v5', type: 'product', file: 'intrahouse_beta' });
-    await remoteResourceBeta({ id: 'intrascada_v5', type: 'product', file: 'intrascada_beta' });
+    await remoteResourceBeta({ id: 'intrahouse', type: 'product', file: 'intrahouse_beta' });
+    await remoteResourceBeta({ id: 'intrascada', type: 'product', file: 'intrascada_beta' });
   
   } else {
     await remoteResource({ id: 'intrahouse', type: 'product', repo: 'ih-v5', asset: 'intrahouse.zip' });
