@@ -93,7 +93,7 @@ function remoteResourceBeta(resource) {
           global.__versions = {};
         }
 
-        global.__versions[resource.id] = json.data.payload.beta_version;
+        global.__versions[resource.id] = json.data.payload.beta_version.replace('v', '').trim();
 
         if (fs.pathExistsSync(path.join('resources', resource.file))) {
           await fs.remove(path.join('resources', resource.file));
