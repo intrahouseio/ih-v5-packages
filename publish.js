@@ -1,6 +1,9 @@
 const fs = require('fs-extra');
 const path = require('path');
 
+const isBeta = process.argv.includes('--beta');
+const branch = isBeta ? 'beta' : 'stable';
+
 const { REPO_DIR_NAME, DEB_URL } = require('./tools/constatnts');
 
 const structRepo = require('./structs/repo');
@@ -37,10 +40,10 @@ async function main() {
 
   for (const platform of fs.readdirSync(path.join(REPO_DIR_NAME))) {
     if (fs.statSync(path.join(REPO_DIR_NAME, platform)).isDirectory()) {
-      if (fs.existsSync(path.join(REPO_DIR_NAME, platform, 'pool', 'stable'))) {
-        for (const _product of fs.readdirSync(path.join(REPO_DIR_NAME, platform, 'pool', 'stable'))) {
-          for (const _version of fs.readdirSync(path.join(REPO_DIR_NAME, platform, 'pool', 'stable', _product))) {
-            for (const file of fs.readdirSync(path.join(REPO_DIR_NAME, platform, 'pool', 'stable', _product, _version))) {
+      if (fs.existsSync(path.join(REPO_DIR_NAME, platform, 'pool', branch))) {
+        for (const _product of fs.readdirSync(path.join(REPO_DIR_NAME, platform, 'pool', branch))) {
+          for (const _version of fs.readdirSync(path.join(REPO_DIR_NAME, platform, 'pool', branch, _product))) {
+            for (const file of fs.readdirSync(path.join(REPO_DIR_NAME, platform, 'pool', branch, _product, _version))) {
               const ext = path.extname(file);
               const params = file.replace(ext, '').split('_');
               const [product, version, proc] = params;
@@ -72,7 +75,11 @@ async function main() {
     console.log('\nVersions:\n');
     console.log(JSON.stringify(versions, null, 2));
 
-    fs.writeFileSync(path.join(process.cwd(), REPO_DIR_NAME, 'versions'), JSON.stringify(versions, null, 2), 'utf8')
+    if (isBeta) {
+
+    } else {
+      fs.writeFileSync(path.join(process.cwd(), REPO_DIR_NAME, 'versions'), JSON.stringify(versions, null, 2), 'utf8')
+    }
   } else {
     console.log('ERROR: Repository empty!!!');
   }

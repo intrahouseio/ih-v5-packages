@@ -3,6 +3,9 @@ const { exec } = require('child_process');
 const fs = require('fs-extra');
 const path = require('path');
 
+const isBeta = process.argv.includes('--beta');
+const branch = isBeta ? 'beta' : 'stable';
+
 const fileRelease = require('../files/release');
 
 async function structRepo(repoPath, platform) {
@@ -14,8 +17,8 @@ async function structRepo(repoPath, platform) {
   fs.removeSync(path.join(cwd));
 
   fs.ensureDirSync(path.join(cwd));
-  fs.ensureDirSync(path.join(cwd, 'pool', 'stable'));
-  fs.ensureDirSync(path.join(cwd, 'dists', 'stable', 'main'));
+  fs.ensureDirSync(path.join(cwd, 'pool', branch));
+  fs.ensureDirSync(path.join(cwd, 'dists', branch, 'main'));
 
   fs.writeFileSync(path.join(cwd, 'release.conf'), fileRelease(platform), 'utf8');
 
@@ -23,7 +26,7 @@ async function structRepo(repoPath, platform) {
   for (const file in platform.files) {
     const { product, version, proc } = platform.files[file];
 
-    const dir = path.join(cwd, 'pool', 'stable', product, version);
+    const dir = path.join(cwd, 'pool', branch, product, version);
     const name = `${product}_${version}_${proc}.deb`;
 
     const stat = fs.statSync(file);
@@ -51,30 +54,30 @@ async function structRepo(repoPath, platform) {
   }
 
   for (const arch in platform.processors) {
-    fs.ensureDirSync(path.join(cwd, 'dists', 'stable', 'main', 'binary-' + arch));
+    fs.ensureDirSync(path.join(cwd, 'dists', branch, 'main', 'binary-' + arch));
     
-    fs.removeSync(path.join(cwd, 'dists', 'stable', 'main', 'binary-' + arch, 'Packages'));
-    fs.removeSync(path.join(cwd, 'dists', 'stable', 'main', 'binary-' + arch, 'Packages.gz'));
-    fs.removeSync(path.join(cwd, 'dists', 'stable', 'main', 'binary-' + arch, 'Release'));
+    fs.removeSync(path.join(cwd, 'dists', branch, 'main', 'binary-' + arch, 'Packages'));
+    fs.removeSync(path.join(cwd, 'dists', branch, 'main', 'binary-' + arch, 'Packages.gz'));
+    fs.removeSync(path.join(cwd, 'dists', branch, 'main', 'binary-' + arch, 'Release'));
   
-    await cmd_exec(`apt-ftparchive --arch ${arch} packages ${path.join('pool', 'stable')} > ${path.join(cwd, 'dists', 'stable', 'main', 'binary-' + arch, 'Packages')}`, cwd);
-    await cmd_exec(`gzip -fk ${path.join(cwd, 'dists', 'stable', 'main', 'binary-' + arch, 'Packages')} > ${path.join(cwd, 'dists', 'stable', 'main', 'binary-' + arch, 'Packages.gz')}`, cwd);
-    await cmd_exec(`apt-ftparchive release ${path.join('dists', 'stable', 'main', 'binary-' + arch)} > ${path.join(cwd, 'dists', 'stable', 'main', 'binary-' + arch, 'Release')}`, cwd);
+    await cmd_exec(`apt-ftparchive --arch ${arch} packages ${path.join('pool', branch)} > ${path.join(cwd, 'dists', branch, 'main', 'binary-' + arch, 'Packages')}`, cwd);
+    await cmd_exec(`gzip -fk ${path.join(cwd, 'dists', branch, 'main', 'binary-' + arch, 'Packages')} > ${path.join(cwd, 'dists', branch, 'main', 'binary-' + arch, 'Packages.gz')}`, cwd);
+    await cmd_exec(`apt-ftparchive release ${path.join('dists', branch, 'main', 'binary-' + arch)} > ${path.join(cwd, 'dists', branch, 'main', 'binary-' + arch, 'Release')}`, cwd);
   }
 
-  fs.removeSync(path.join(cwd, 'dists', 'stable', 'InRelease'));
-  fs.removeSync(path.join(cwd, 'dists', 'stable', 'Release'));
-  fs.removeSync(path.join(cwd, 'dists', 'stable', 'Release.gpg'));
+  fs.removeSync(path.join(cwd, 'dists', branch, 'InRelease'));
+  fs.removeSync(path.join(cwd, 'dists', branch, 'Release'));
+  fs.removeSync(path.join(cwd, 'dists', branch, 'Release.gpg'));
 
   console.log('   ' + 'create main release file...');
 
-  await cmd_exec(`apt-ftparchive release -c ${path.join('release.conf')} ${path.join('dists', 'stable')} > ${path.join(cwd, 'dists', 'stable', 'Release')}`, cwd);
+  await cmd_exec(`apt-ftparchive release -c ${path.join('release.conf')} ${path.join('dists', branch)} > ${path.join(cwd, 'dists', branch, 'Release')}`, cwd);
   fs.removeSync(path.join(cwd, 'release.conf'));
   
   console.log('   ' + 'sign gpg/release files...');
 
-  await cmd_exec(`gpg -a --yes --output ${path.join('dists', 'stable', 'Release.gpg')} --detach-sign ${path.join('dists', 'stable', 'Release')}`, cwd);  
-  await cmd_exec(`gpg -a --yes --clearsign --output ${path.join('dists', 'stable', 'InRelease')} --detach-sign ${path.join('dists', 'stable', 'Release')}`, cwd);  
+  await cmd_exec(`gpg -a --yes --output ${path.join('dists', branch, 'Release.gpg')} --detach-sign ${path.join('dists', branch, 'Release')}`, cwd);  
+  await cmd_exec(`gpg -a --yes --clearsign --output ${path.join('dists', branch, 'InRelease')} --detach-sign ${path.join('dists', branch, 'Release')}`, cwd);  
 }
 
 function cmd_exec(str, cwd) {
