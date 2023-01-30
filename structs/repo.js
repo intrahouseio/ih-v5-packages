@@ -14,9 +14,11 @@ async function structRepo(repoPath, platform) {
 
   const cwd = path.join(repoPath, platform.name);
 
-  fs.removeSync(path.join(cwd));
-
   fs.ensureDirSync(path.join(cwd));
+
+  fs.removeSync(path.join(cwd, 'pool', branch));
+  fs.removeSync(path.join(cwd, 'dists', branch));
+
   fs.ensureDirSync(path.join(cwd, 'pool', branch));
   fs.ensureDirSync(path.join(cwd, 'dists', branch, 'main'));
 
