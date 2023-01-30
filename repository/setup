@@ -13,12 +13,17 @@ exec_cmd() {
     exec_cmd_nobail "$1" || bail
 }
 
+branch="stable"
 repo="debian"
 title="Debian"
 name="ih-systems"
 keyring="/usr/share/keyrings"
 key_url="http://deb.ih-systems.com/ih-systems.gpg"
 local_key="$keyring/ih-systems.gpg"
+
+if [ "$1" == "beta" ]; then
+  branch="beta"
+fi
 
 if grep -qs "ubuntu" "/etc/os-release"; then
   repo="ubuntu"
@@ -59,7 +64,7 @@ fi
 
 print_status "Creating apt sources list file for the ${name} repo..."
 
-exec_cmd "echo 'deb [signed-by=$local_key] http://deb.ih-systems.com/${repo} stable main' > /etc/apt/sources.list.d/${name}.list"
+exec_cmd "echo 'deb [signed-by=$local_key] http://deb.ih-systems.com/${repo} ${branch} main' > /etc/apt/sources.list.d/${name}.list"
 
 print_status "Running \`apt-get update\` for you..."
 
