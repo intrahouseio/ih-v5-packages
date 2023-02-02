@@ -9,6 +9,7 @@
 /repository/versions
 /repository/jethome
 /repository2
+/repository/files
 
 *.deb
 package-lock.json
