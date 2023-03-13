@@ -58,7 +58,7 @@ async function main() {
                 const a = versions[product][platform + '_' + proc].version.split('.');
                 const b = version.split('.');
     
-                if (b[0]*100+b[1]*10+b[2] > a[0]*100+a[1]*10+a[2]) {
+                if (b[0].length >= a[0].length && b[1].length >= a[1].length && b[2].length >= a[2].length && b.join() > a.join()) {
                   versions[product][platform + '_' + proc] = { version, url: `${DEB_URL}/${platform}/pool/stable/${product}/${version}/${file}` };
                 }
               }
