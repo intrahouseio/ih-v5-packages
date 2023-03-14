@@ -1,5 +1,6 @@
 const fs = require('fs-extra');
 const path = require('path');
+const semverLt = require('semver/functions/lt');
 
 const isBeta = process.argv.includes('--beta');
 const branch = isBeta ? 'beta' : 'stable';
@@ -55,10 +56,10 @@ async function main() {
               if (versions[product][platform + '_' + proc] === undefined) {
                 versions[product][platform + '_' + proc] = { version, url: `${DEB_URL}/${platform}/pool/stable/${product}/${version}/${file}` };
               } else {
-                const a = versions[product][platform + '_' + proc].version.split('.');
-                const b = version.split('.');
+                const a = versions[product][platform + '_' + proc].version;
+                const b = version;
     
-                if (b[0].length >= a[0].length && b[1].length >= a[1].length && b[2].length >= a[2].length && b.join() > a.join()) {
+                if (semverLt(a, b)) {
                   versions[product][platform + '_' + proc] = { version, url: `${DEB_URL}/${platform}/pool/stable/${product}/${version}/${file}` };
                 }
               }
