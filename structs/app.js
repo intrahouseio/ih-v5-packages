@@ -10,8 +10,6 @@ async function structApp(buildPath, platform, proc, product) {
 
     fs.ensureDirSync(pathApp);
     
-    fs.createFileSync(path.join(buildPath, 'pkg', product.service + ext)); //###
-    
     fs.copyFileSync(path.join(buildPath, 'pkg', product.service + ext), path.join(pathApp, product.service + ext2));
     fs.chmodSync(path.join(pathApp, product.service + ext2), 0755);
     fs.removeSync(path.join(buildPath, 'pkg'));
