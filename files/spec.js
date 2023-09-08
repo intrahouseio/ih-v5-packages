@@ -12,6 +12,7 @@ function fileSpec(buildPath, platform, proc, product) {
     'Name: ' + product.name + '\n' +
     'Version: ' + (global.__versions ? global.__versions[product.name] : VERSION_EMPTY) + '\n' +
     'Release: 1' + '\n' +
+    'BuildArch: ' + proc.arch + '\n' +
     'Summary: ' + (PRODUCT_DESCRIPTIONS[product.name] || '').replace('\n', '') + '\n' +
     'URL: ' + 'https://' + PRODUCT_SITES[product.name] + '\n' +
     'Packager: ' + 'Intra LLC' + ' <support@ih-systems.com>' + '\n' +
