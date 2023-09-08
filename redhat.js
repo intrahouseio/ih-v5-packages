@@ -16,8 +16,8 @@ const options = {
     temp: '/var/lib',
   },
   processors: [
-    { arch: 'x86_64', target: 'linux-x64' },
     { arch: 'aarch64', target: 'linux-arm64' },
+    { arch: 'x86_64', target: 'linux-x64' },
     { arch: 'armv7hl', target: 'linux-armv7' },
   ],
   deps: {

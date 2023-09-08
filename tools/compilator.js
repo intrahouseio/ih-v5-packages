@@ -43,7 +43,7 @@ async function compilator(platform, proc, product) {
       cleanupDir(path.join(buildPath, platform.paths.assets, product.service), platform, proc, product);
  
       const cwd = buildPath;
-      const cp = spawn('rpmbuild', ['--buildroot', buildPath + '/', '-bb', 'setup.spec'], { cwd });
+      const cp = spawn('rpmbuild', ['--target', proc.arch, '--buildroot', buildPath + '/', '-bb', 'setup.spec'], { cwd });
 
       cp.stdout.on('data', function(data) {
         console.log(data.toString());
