@@ -4,7 +4,7 @@ const path = require('path');
 const fileService = require('../files/service');
 
 async function structService(buildPath, platform, proc, product) {
-  if (platform.packer === 'dpkg') {
+  if (platform.packer === 'dpkg' || platform.packer === 'rpmbuild') {
     const pathService = path.join(buildPath, 'lib', 'systemd', 'system');
 
     fs.ensureDirSync(pathService);

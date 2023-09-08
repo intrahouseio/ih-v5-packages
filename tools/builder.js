@@ -44,7 +44,7 @@ async function builder(options) {
 
   console.log('Download Dependencies:');
 
-  await dependencies(options);
+  //### await dependencies(options);
 
   console.log('Platform:', platform.name);
 

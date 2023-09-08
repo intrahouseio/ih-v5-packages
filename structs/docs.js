@@ -9,7 +9,7 @@ const fileChangelog = require('../files/changelog');
 const fileHelp = require('../files/help');
 
 async function structDocs(buildPath, platform, proc, product) {
-  if (platform.packer === 'dpkg') {
+  if (platform.packer === 'dpkg' || platform.packer === 'rpmbuild') {
     return new Promise(resolve => {
       let check = 0;
 

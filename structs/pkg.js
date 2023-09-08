@@ -7,7 +7,7 @@ const fileMain = require('../files/main');
 const isBeta = process.argv.includes('--beta');
 
 async function structPKG(buildPath, platform, proc, product) {
-  if (platform.packer === 'dpkg' || platform.packer === 'nsis') {
+  if (platform.packer === 'dpkg' || platform.packer === 'nsis' || platform.packer === 'rpmbuild') {
     const pathPkg = path.join(buildPath, 'pkg');
 
     fs.ensureDirSync(pathPkg);

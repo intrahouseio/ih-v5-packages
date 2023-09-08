@@ -9,6 +9,7 @@ const filePostrm = require('../files/postrm');
 const filePrerm = require('../files/prerm');
 
 const fileSetupNSI = require('../files/setupNSI');
+const fileSpec = require('../files/Spec');
 
 async function structPacker(buildPath, platform, proc, product) {
   if (platform.packer === 'dpkg') {
@@ -24,6 +25,10 @@ async function structPacker(buildPath, platform, proc, product) {
     }
    
     fs.writeFileSync(path.join(buildPath, 'DEBIAN', 'md5sums'), fileMd5sums(buildPath, platform, proc, product));
+  }
+
+  if (platform.packer === 'rpmbuild') {
+    fs.writeFileSync(path.join(buildPath, 'setup.spec'), fileSpec(buildPath, platform, proc, product));
   }
 
   if (platform.packer === 'nsis') {

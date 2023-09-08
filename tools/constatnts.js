@@ -14,6 +14,10 @@ const PRODUCT_DESCRIPTIONS = {
   intrahouse: 'Software platform\n for Smart Home systems',
   intrascada: 'Open and scalable platform\n for industrial monitoring and control systems',
 };
+const PRODUCT_DESCRIPTIONS2 = {
+  intrahouse: 'IntraHouse is a software platform for Smart Home systems that allows you to combine all the devices and equipment of your home for their smooth and economical functioning',
+  intrascada: 'IntraSCADA is a universal and flexible software platform for creating professional automation and monitoring systems.\nIntraSCADA is a new generation of software that combines proven HMI / SCADA capabilities used by thousands of organizations around the world with new advanced features that deliver the best results.\nThe IntraSCADA system is developed on the basis of modern web technologies. Powerful configuration tools and rich visualization capabilities make it easy to develop projects of any size and complexity.',
+};
 
 const PRODUCT_TELEGRAM = {
   intrahouse: 'https://t.me/intraHouse',
@@ -27,5 +31,6 @@ module.exports = {
   VERSION_EMPTY,
   PRODUCT_SITES,
   PRODUCT_DESCRIPTIONS,
+  PRODUCT_DESCRIPTIONS2,
   PRODUCT_TELEGRAM
 }

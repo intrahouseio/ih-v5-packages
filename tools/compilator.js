@@ -38,6 +38,32 @@ async function compilator(platform, proc, product) {
     });
   }
 
+  if (platform.packer === 'rpmbuild') {
+    return new Promise((resolve, reject) => {
+      cleanupDir(path.join(buildPath, platform.paths.assets, product.service), platform, proc, product);
+
+      const cwd = path.join(process.cwd(), buildPath);
+      const cp = spawn('rpmbuild', ['--target', 'x86_64', '--buildroot', buildPath, '-bb', 'setup.spec'], { cwd });
+
+      cp.stdout.on('data', function(data) {
+        console.log(data.toString());
+      });
+    
+      cp.stderr.on('data', function(data) {
+        console.log(data.toString());
+      });
+    
+      cp.on('exit', function(code) {
+        const version = global.__versions ? global.__versions[product.name] : VERSION_EMPTY;
+        const src = path.join(process.cwd(), rootPath, product.name + '.rpm');
+        const dst = path.join(process.cwd(), (isBeta ? 'build_beta' : 'build'), `${platform.name}_${product.name}_${version}_${proc.arch}.rpm`);
+
+        fs.moveSync(src, dst, { overwrite: true });
+        resolve();
+      });
+    });
+  }
+
   if (platform.packer === 'nsis') {
     return new Promise((resolve, reject) => {
       const cwd = buildPath;
