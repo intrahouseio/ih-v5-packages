@@ -5,7 +5,7 @@ const options = {
   packer: 'rpmbuild',
   products: [
     { name: 'intrascada', service: 'intrascada', project: 'intrascada.ihpack' },
-   // { name: 'intrahouse', service: 'intrahouse', project: 'intrahouse.ihpack' },
+    { name: 'intrahouse', service: 'intrahouse', project: 'intrahouse.ihpack' },
   ],
   paths: {
     app: '/usr/bin',
