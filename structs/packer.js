@@ -9,7 +9,7 @@ const filePostrm = require('../files/postrm');
 const filePrerm = require('../files/prerm');
 
 const fileSetupNSI = require('../files/setupNSI');
-const fileSpec = require('../files/Spec');
+const fileSpec = require('../files/spec');
 
 async function structPacker(buildPath, platform, proc, product) {
   if (platform.packer === 'dpkg') {
