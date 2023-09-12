@@ -17,6 +17,7 @@
 
 /repository2
 *.deb
-package-lock.json
 *.token
+package-lock.json
+
 
