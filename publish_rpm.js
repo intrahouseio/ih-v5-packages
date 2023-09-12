@@ -37,7 +37,7 @@ async function main() {
   }
 
   console.log('\nSign:\n');
-  await cmd_exec(`docker run --rm -v ${path.join(process.cwd(), 'build2')}:/build2 ih-systems/rpmsign /bin/bash -c 'cd /build2 && rpm --define "_gpg_name ih-systems.com" --addsign *.rpm'`, process.cwd());  
+  await cmd_exec(`docker run --rm -v ${path.join(process.cwd(), isBeta ? path.join('@builds', 'rpm', 'beta') : path.join('@builds', 'rpm', 'stable'))}:/build ih-systems/rpmsign /bin/bash -c 'cd /build && rpm --define "_gpg_name ih-systems.com" --addsign *.rpm'`, process.cwd());  
 
   console.log('\nPublish:\n');
 
