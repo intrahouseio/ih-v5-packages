@@ -7,7 +7,7 @@ const branch = isBeta ? 'beta' : 'stable';
 
 const { DEB_REPO_DIR, DEB_URL } = require('./tools/constatnts');
 
-const structRepo = require('./structs/repo');
+const structRepoDeb = require('./structs/repo-deb');
 
 const platforms = {};
 const versions = {};
@@ -36,7 +36,7 @@ async function main() {
   console.log('\nPublish:\n');
 
   for (const name in platforms) {
-    await structRepo(path.join(process.cwd(), DEB_REPO_DIR), platforms[name]);
+    await structRepoDeb(path.join(process.cwd(), DEB_REPO_DIR), platforms[name]);
   }
 
   for (const platform of fs.readdirSync(path.join(DEB_REPO_DIR))) {

@@ -8,7 +8,7 @@ const branch = isBeta ? 'beta' : 'stable';
 
 const fileRelease = require('../files/release');
 
-async function structRepo(repoPath, platform) {
+async function structRepoDeb(repoPath, platform) {
   console.log(' ' + platform.name + ':');
   console.log('   ' + 'create folders...');
 
@@ -93,4 +93,4 @@ function cmd_exec(str, cwd) {
   });
 }
 
-module.exports = structRepo;
+module.exports = structRepoDeb;
