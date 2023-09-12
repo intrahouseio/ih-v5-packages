@@ -6,12 +6,13 @@
 /resources
 /keys
 
-/repository/wirenboard
-/repository/debian
-/repository/versions
-/repository/jethome
+/@repositories/deb/wirenboard
+/@repositories/deb/debian
+/@repositories/deb/versions
+/@repositories/deb/jethome
+/@repositories/deb/files
+
 /repository2
-/repository/files
 /repository3
 /repositiry3/redhat
 
@@ -19,6 +20,6 @@
 package-lock.json
 *.token
 
-!/repository/others/libatomic1_6.3.0-18_armhf.deb
-!/repository/others/zip_3.0-11_armhf.deb
-!/repository/sign/astralinux/intrascada_5.12.6_amd64_sign.deb
+!/@repository_deb/others/libatomic1_6.3.0-18_armhf.deb
+!/@repository_deb/others/zip_3.0-11_armhf.deb
+!/@repository_deb/sign/astralinux/intrascada_5.12.6_amd64_sign.deb
