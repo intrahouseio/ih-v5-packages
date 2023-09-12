@@ -15,7 +15,8 @@
 
 /@repositories/rpm/redhat
 
-/repository2
+/@repositories/win
+
 *.deb
 *.token
 package-lock.json
