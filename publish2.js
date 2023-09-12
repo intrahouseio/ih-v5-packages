@@ -1,0 +1,116 @@
+const fs = require('fs-extra');
+const path = require('path');
+const semverLt = require('semver/functions/lt');
+const { exec } = require('child_process');
+
+const isBeta = process.argv.includes('--beta');
+const branch = isBeta ? 'beta' : 'stable';
+
+const { REPO_DIR_NAME2, RPM_URL } = require('./tools/constatnts');
+
+const structRepo2 = require('./structs/repo2');
+
+const platforms = {};
+const versions = {};
+
+console.log('Detect files: \n');
+
+async function main() {
+  for (const file of fs.readdirSync('./build2' + (isBeta ? '_beta' : ''))) {
+    const ext = path.extname(file);
+    const params = file.replace(ext, '').split('-1.');
+    
+    if (ext === '.rpm' && params.length === 2) {
+      const [platform, product, version] = params[0].split('-');
+      const [proc] = params[1].split('.');
+
+      if (platforms[platform] === undefined) {
+        platforms[platform] = { name: platform, products: {}, processors: {}, files: {} };
+      }
+
+      platforms[platform].products[product] = true;
+      platforms[platform].processors[proc] = true;
+      platforms[platform].files[path.join(process.cwd(), 'build2' + (isBeta ? '_beta' : ''), file)] = { platform, product, version, proc, };
+  
+      console.log(platform, proc, product, version);
+    }
+  }
+
+  console.log('\nSign:\n');
+  await cmd_exec(`docker run --rm -v ${path.join(process.cwd(), 'build2')}:/build2 ih-systems/rpmsign /bin/bash -c 'cd /build2 && rpm --define "_gpg_name ih-systems.com" --addsign *.rpm'`, process.cwd());  
+
+  console.log('\nPublish:\n');
+
+  for (const name in platforms) {
+    await structRepo2(path.join(process.cwd(), REPO_DIR_NAME2), platforms[name]);
+  }
+
+
+  for (const platform of fs.readdirSync(path.join(REPO_DIR_NAME2))) {
+    if (fs.statSync(path.join(REPO_DIR_NAME2, platform)).isDirectory()) {
+      if (fs.existsSync(path.join(REPO_DIR_NAME2, platform, branch))) {
+        for (const _product of fs.readdirSync(path.join(REPO_DIR_NAME2, platform, branch))) {
+          if (_product !== 'repodata') {
+            for (const _version of fs.readdirSync(path.join(REPO_DIR_NAME2, platform, branch, _product))) {
+              for (const file of fs.readdirSync(path.join(REPO_DIR_NAME2, platform, branch, _product, _version))) {
+                const ext = path.extname(file);
+                const params = file.replace(ext, '').split('-1.');
+                const [product, version] = params[0].split('-');
+                const [proc] = params[1].split('.');
+                console.log(product, version, proc)
+                if (versions[product] === undefined) {
+                  versions[product] = {};
+                }
+      
+                if (versions[product][platform + '_' + proc] === undefined) {
+                  versions[product][platform + '_' + proc] = { version, url: `${RPM_URL}/${platform}/stable/${product}/${version}/${file}` };
+                } else {
+                  const a = versions[product][platform + '_' + proc].version;
+                  const b = version;
+                
+                  if (semverLt(a, b)) {
+                    versions[product][platform + '_' + proc] = { version, url: `${RPM_URL}/${platform}/stable/${product}/${version}/${file}` };
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  if (Object.keys(versions).length) {
+    console.log('\nVersions:\n');
+    console.log(JSON.stringify(versions, null, 2));
+
+    if (isBeta) {
+
+    } else {
+      fs.writeFileSync(path.join(process.cwd(), REPO_DIR_NAME2, 'versions'), JSON.stringify(versions, null, 2), 'utf8')
+    }
+  } else {
+    console.log('ERROR: Repository empty!!!');
+  }
+
+  console.log('\nComplete!');
+}
+
+function cmd_exec(str, cwd) {
+  return new Promise(resolve => { 
+    const cp = exec(str, { cwd }, err => { 
+      if (err) {
+        console.log(err);
+      }
+      resolve();
+    })
+    cp.stdout.on('data', function(data) {
+      console.log(data); 
+    });
+    cp.stderr.on('data', function (data) {
+      //console.log(data);
+    });
+  });
+}
+
+main();

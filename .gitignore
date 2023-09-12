@@ -1,6 +1,8 @@
 /temp
 /build
 /build_beta
+/build2
+/build2_beta
 /resources
 /keys
 
@@ -10,6 +12,8 @@
 /repository/jethome
 /repository2
 /repository/files
+/repository3
+/repositiry3/redhat
 
 *.deb
 package-lock.json
