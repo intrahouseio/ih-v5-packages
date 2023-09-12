@@ -15,7 +15,7 @@ const versions = {};
 console.log('Detect files: \n');
 
 async function main() {
-  for (const file of fs.readdirSync('./build' + (isBeta ? '_beta' : ''))) {
+  for (const file of fs.readdirSync(isBeta ? path.join('@builds', 'deb', 'beta') : path.join('@builds', 'deb', 'stable'))) {
     const ext = path.extname(file);
     const params = file.replace(ext, '').split('_');
   
@@ -27,7 +27,7 @@ async function main() {
       }
 
       platforms[platform].processors[proc] = true;
-      platforms[platform].files[path.join(process.cwd(), 'build' + (isBeta ? '_beta' : ''), file)] = { platform, product, version, proc, };
+      platforms[platform].files[path.join(process.cwd(), isBeta ? path.join('@builds', 'deb', 'beta') : path.join('@builds', 'deb', 'stable'), file)] = { platform, product, version, proc, };
   
       console.log(platform, proc, product, version);
     }
