@@ -56,7 +56,7 @@ async function compilator(platform, proc, product) {
       cp.on('exit', function(code) {
         const version = global.__versions ? global.__versions[product.name] : VERSION_EMPTY;
         const src = path.join(process.cwd(), rootPath, product.name + '.rpm');
-        const dst = path.join(process.cwd(), (isBeta ? 'build_beta2' : 'build2'), `${platform.name}-${product.name}-${version}-1.${proc.arch}.rpm`);
+        const dst = path.join(process.cwd(), (isBeta ? path.join('@builds', 'deb', 'beta') : path.join('@builds', 'deb', 'stable')), `${platform.name}-${product.name}-${version}-1.${proc.arch}.rpm`);
 
         fs.moveSync(src, dst, { overwrite: true });
         resolve();

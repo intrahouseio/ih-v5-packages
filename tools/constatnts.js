@@ -1,6 +1,8 @@
 const TEMP_DIR_NAME = 'temp';
+
 const DEB_REPO_DIR = '@repositories/deb';
-const REPO_DIR_NAME2 = 'repository3';
+const RPM_REPO_DIR = '@repositories/rpm';
+
 const DEB_URL = 'http://deb.ih-systems.com'
 const RPM_URL = 'http://rpm.ih-systems.com'
 
@@ -28,7 +30,7 @@ const PRODUCT_TELEGRAM = {
 module.exports = {
   TEMP_DIR_NAME,
   DEB_REPO_DIR,
-  REPO_DIR_NAME2,
+  RPM_REPO_DIR,
   DEB_URL,
   RPM_URL,
   VERSION_EMPTY,

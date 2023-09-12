@@ -6,9 +6,9 @@ const { exec } = require('child_process');
 const isBeta = process.argv.includes('--beta');
 const branch = isBeta ? 'beta' : 'stable';
 
-const { REPO_DIR_NAME2, RPM_URL } = require('./tools/constatnts');
+const { RPM_REPO_DIR, RPM_URL } = require('./tools/constatnts');
 
-const structRepo2 = require('./structs/repo2');
+const structRepoRpm = require('./structs/repo-rpm');
 
 const platforms = {};
 const versions = {};
@@ -16,7 +16,7 @@ const versions = {};
 console.log('Detect files: \n');
 
 async function main() {
-  for (const file of fs.readdirSync('./build2' + (isBeta ? '_beta' : ''))) {
+  for (const file of fs.readdirSync(isBeta ? path.join('@builds', 'rpm', 'beta') : path.join('@builds', 'rpm', 'stable'))) {
     const ext = path.extname(file);
     const params = file.replace(ext, '').split('-1.');
     
@@ -30,7 +30,7 @@ async function main() {
 
       platforms[platform].products[product] = true;
       platforms[platform].processors[proc] = true;
-      platforms[platform].files[path.join(process.cwd(), 'build2' + (isBeta ? '_beta' : ''), file)] = { platform, product, version, proc, };
+      platforms[platform].files[path.join(process.cwd(), isBeta ? path.join('@builds', 'rpm', 'beta') : path.join('@builds', 'rpm', 'stable'), file)] = { platform, product, version, proc, };
   
       console.log(platform, proc, product, version);
     }
@@ -42,17 +42,17 @@ async function main() {
   console.log('\nPublish:\n');
 
   for (const name in platforms) {
-    await structRepo2(path.join(process.cwd(), REPO_DIR_NAME2), platforms[name]);
+    await structRepoRpm(path.join(process.cwd(), RPM_REPO_DIR), platforms[name]);
   }
 
 
-  for (const platform of fs.readdirSync(path.join(REPO_DIR_NAME2))) {
-    if (fs.statSync(path.join(REPO_DIR_NAME2, platform)).isDirectory()) {
-      if (fs.existsSync(path.join(REPO_DIR_NAME2, platform, branch))) {
-        for (const _product of fs.readdirSync(path.join(REPO_DIR_NAME2, platform, branch))) {
+  for (const platform of fs.readdirSync(path.join(RPM_REPO_DIR))) {
+    if (fs.statSync(path.join(RPM_REPO_DIR, platform)).isDirectory()) {
+      if (fs.existsSync(path.join(RPM_REPO_DIR, platform, branch))) {
+        for (const _product of fs.readdirSync(path.join(RPM_REPO_DIR, platform, branch))) {
           if (_product !== 'repodata') {
-            for (const _version of fs.readdirSync(path.join(REPO_DIR_NAME2, platform, branch, _product))) {
-              for (const file of fs.readdirSync(path.join(REPO_DIR_NAME2, platform, branch, _product, _version))) {
+            for (const _version of fs.readdirSync(path.join(RPM_REPO_DIR, platform, branch, _product))) {
+              for (const file of fs.readdirSync(path.join(RPM_REPO_DIR, platform, branch, _product, _version))) {
                 const ext = path.extname(file);
                 const params = file.replace(ext, '').split('-1.');
                 const [product, version] = params[0].split('-');
@@ -87,7 +87,7 @@ async function main() {
     if (isBeta) {
 
     } else {
-      fs.writeFileSync(path.join(process.cwd(), REPO_DIR_NAME2, 'versions'), JSON.stringify(versions, null, 2), 'utf8')
+      fs.writeFileSync(path.join(process.cwd(), RPM_REPO_DIR, 'versions'), JSON.stringify(versions, null, 2), 'utf8')
     }
   } else {
     console.log('ERROR: Repository empty!!!');

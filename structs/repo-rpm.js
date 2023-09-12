@@ -6,7 +6,7 @@ const path = require('path');
 const isBeta = process.argv.includes('--beta');
 const branch = isBeta ? 'beta' : 'stable';
 
-async function structRepo2(repoPath, platform) {
+async function structRepoRpm(repoPath, platform) {
   console.log(' ' + platform.name + ':');
   console.log('   ' + 'create folders...');
 
@@ -54,4 +54,4 @@ function cmd_exec(str, cwd) {
 }
 
 
-module.exports = structRepo2;
+module.exports = structRepoRpm;
