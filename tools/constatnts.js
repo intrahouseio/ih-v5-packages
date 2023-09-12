@@ -1,5 +1,5 @@
 const TEMP_DIR_NAME = 'temp';
-const REPO_DIR_NAME = 'repository';
+const REPO_DIR_NAME = '@repositories/deb';
 const REPO_DIR_NAME2 = 'repository3';
 const DEB_URL = 'http://deb.ih-systems.com'
 const RPM_URL = 'http://rpm.ih-systems.com'
