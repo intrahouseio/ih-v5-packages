@@ -30,7 +30,7 @@ async function compilator(platform, proc, product) {
       cp.on('exit', function(code) {
         const version = global.__versions ? global.__versions[product.name] : VERSION_EMPTY;
         const src = path.join(process.cwd(), rootPath, product.name + '.deb');
-        const dst = path.join(process.cwd(), (isBeta ? 'build_beta' : 'build'), `${platform.name}_${product.name}_${version}_${proc.arch}.deb`);
+        const dst = path.join(process.cwd(), (isBeta ? path.join('@builds', 'deb', 'beta') : path.join('@builds', 'deb', 'stable')), `${platform.name}_${product.name}_${version}_${proc.arch}.deb`);
   
         fs.moveSync(src, dst, { overwrite: true });
         resolve();

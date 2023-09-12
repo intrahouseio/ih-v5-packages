@@ -1,10 +1,12 @@
-/temp
 /build
 /build_beta
 /build2
 /build2_beta
+
+/temp
 /resources
 /keys
+/@builds
 
 /@repositories/deb/wirenboard
 /@repositories/deb/debian
