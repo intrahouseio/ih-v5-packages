@@ -5,15 +5,16 @@
 
 /@repositories/deb/wirenboard
 /@repositories/deb/debian
-/@repositories/deb/versions
 /@repositories/deb/jethome
 /@repositories/deb/files
+/@repositories/deb/versions
 
 !/@repositories/deb/others/libatomic1_6.3.0-18_armhf.deb
 !/@repositories/deb/others/zip_3.0-11_armhf.deb
 !/@repositories/deb/sign/astralinux/intrascada_5.12.6_amd64_sign.deb
 
 /@repositories/rpm/redhat
+/@repositories/rpm/versions
 
 /@repositories/win
 
