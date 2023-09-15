@@ -1,6 +1,7 @@
 const builder = require('./tools/builder');
 
 const options = {
+  url_server: 'http://deb.ih-systems.com/versions',
   name: 'debian',
   packer: 'dpkg',
   products: [

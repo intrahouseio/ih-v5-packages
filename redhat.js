@@ -1,6 +1,7 @@
 const builder = require('./tools/builder');
 
 const options = {
+  url_server: 'http://rpm.ih-systems.com/versions',
   name: 'redhat',
   packer: 'rpmbuild',
   products: [
