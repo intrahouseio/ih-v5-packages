@@ -9,10 +9,6 @@ exec_cmd_nobail() {
     bash -c "$1"
 }
 
-exec_cmd() {
-    exec_cmd_nobail "$1" || bail
-}
-
 branch="stable"
 repo="redhat"
 title="Redhat"
@@ -42,6 +38,6 @@ fi
 
 print_status "Creating yum sources list file for the ${name} repo..."
 
-exec_cmd "echo -e '[${name}]\nname=${name} repository\nbaseurl=http://rpm.ih-systems.com/${repo}/${branch}\nenabled=1\ngpgcheck=1\ngpgkey=http://rpm.ih-systems.com/ih-systems.gpg' > /etc/yum.repos.d/${name}.repo"
+exec_cmd_nobail "echo -e '[${name}]\nname=${name} repository\nbaseurl=http://rpm.ih-systems.com/${repo}/${branch}\nenabled=1\ngpgcheck=1\ngpgkey=http://rpm.ih-systems.com/ih-systems.gpg' > /etc/yum.repos.d/${name}.repo"
 
 print_status "Complete!"
