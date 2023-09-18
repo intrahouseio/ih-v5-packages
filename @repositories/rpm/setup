@@ -25,6 +25,20 @@ if [ "$1" == "beta" ]; then
   branch="beta"
 fi
 
+if grep -qs "centos" "/etc/os-release"; then
+  repo="centos"
+  title="CentOS"
+fi
+
+if grep -qs "redos" "/etc/os-release"; then
+  repo="redos"
+  title="RED OS"
+fi
+
+if grep -qs "altlinux" "/etc/os-release"; then
+  repo="altlinux"
+  title="ALT Linux"
+fi
 
 print_status "Creating yum sources list file for the ${name} repo..."
 
