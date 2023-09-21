@@ -18,6 +18,8 @@
 
 /@repositories/win
 
+/@repositories/files
+
 *.deb
 *.token
 package-lock.json

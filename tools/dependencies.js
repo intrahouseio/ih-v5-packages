@@ -17,6 +17,7 @@ function remoteResource(resource) {
   }
 
   if (resource.url) {
+    console.log(resource.url);
     return new Promise((resolve, reject) => {
       console.log(resource.type, resource.id, '...');
 
@@ -31,13 +32,12 @@ function remoteResource(resource) {
 
   return new Promise((resolve, reject) => {
     const url = 'https://api.github.com/repos/intrahouseio/' + (resource.repo || resource.id) + '/releases/' + (resource.tag ? 'tags/' + resource.tag : 'latest');
-    
     console.log(resource.type, resource.id, '...');
 
     request({ url, headers }, async (err, res, body) => {
       try {
         const json = JSON.parse(body);
-        const file = resource.asset ? json.assets.find(i => i.name === resource.asset).browser_download_url : json.zipball_url;
+        const file = resource.asset ? json.assets.find(i => i.name === resource.asset).id : json.zipball_url;
         const hash = (resource.asset ? json.assets.find(i => i.name === resource.asset).updated_at : json.node_id).replace(/\:/g, '');
    
         if (resource.type === 'product') {
@@ -60,7 +60,7 @@ function remoteResource(resource) {
           resolve();
         } else {   
           await fs.remove(path.join('resources', resource.id));
-
+ 
           if (resource.zip === 'tgz') {
             await fs.ensureDir(path.join('resources', resource.id));
             await request.get({ url: file, headers })
@@ -68,7 +68,10 @@ function remoteResource(resource) {
               .pipe(tar.extract({ cwd: path.join(process.cwd(), 'resources', resource.id) })) 
               .on('finish', end);   
           } else {
-            await request.get({ url: file, headers })
+            if (resource.asset) {
+              headers.Accept = 'application/octet-stream';
+            }
+            await request.get({ url: resource.asset ? ` https://api.github.com/repos/intrahouseio/ih-v5/releases/assets/${file}`: file, headers })
               .pipe(unzipper.Extract({ path: path.join('resources', resource.id ) }))
               .on('finish', end);   
           }
@@ -171,7 +174,7 @@ async function dependencies(options) {
   await remoteResource({ id: 'node_modules', type: 'npm', repo: 'ih-v5', tag: 'v0.0.0', asset: 'node_modules_v2.zip' });
 
   for (const project in projects) {
-    await remoteResource({ id: project, type: 'project', url: 'https://github.com/intrahouseio/ih-v5/raw/main/projects/' + project });
+    await remoteResource({ id: project, type: 'project', url: 'https://raw.githubusercontent.com/intrahouseio/ih-v5/main/projects/' + project });
   }
 
   for (const resourceType in deps) {
