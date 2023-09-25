@@ -7,7 +7,7 @@ const fileMain = require('../files/main');
 const isBeta = process.argv.includes('--beta');
 
 async function structPKG(buildPath, platform, proc, product) {
-  if (platform.packer === 'dpkg' || platform.packer === 'nsis' || platform.packer === 'rpmbuild') {
+  if (platform.packer === 'dpkg' || platform.packer === 'nsis' || platform.packer === 'rpmbuild'|| platform.packer === 'pkgbuild') {
     const pathPkg = path.join(buildPath, 'pkg');
 
     fs.ensureDirSync(pathPkg);
@@ -39,10 +39,6 @@ async function structPKG(buildPath, platform, proc, product) {
     fs.writeFileSync(path.join(pathPkg, 'package.json'), filePackage(platform, proc, product));
     fs.writeFileSync(path.join(pathPkg, 'main.js'), fileMain(platform, proc, product));
   }
-
-  if (platform.packer === 'nsis') {
-
-  } 
 }
 
 module.exports = structPKG;

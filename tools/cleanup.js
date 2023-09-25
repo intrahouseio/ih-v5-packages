@@ -34,11 +34,11 @@ function parseExecutableFile(file) {
     const cputype = data.slice(4, 8).toString('hex'); 
 
     if (cputype === '07000001') {
-      return { platform: 'darwin', arch: 'x64', target: 'darwin-x64' };
+      return { platform: 'darwin', arch: 'x64', target: 'macos-x64' }; // darwin-x64
     }
 
     if (cputype === '0c000001') {
-      return { platform: 'darwin', arch: 'arm64', target: 'darwin-arm64' };
+      return { platform: 'darwin', arch: 'arm64', target: 'macos-arm64' }; //darwin-arm64
     }
   }
 

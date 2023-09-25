@@ -4,8 +4,16 @@ const archiver = require('archiver');
 const { cleanupDir } = require('../tools/cleanup');
 
 async function structAssets(buildPath, platform, proc, product) {
-  if (platform.packer === 'dpkg' || platform.packer === 'nsis' || platform.packer === 'rpmbuild') {
-    const pathAssets = platform.packer === 'nsis' ? path.join(buildPath, platform.paths.assets) : path.join(buildPath, platform.paths.assets, product.service);
+  if (platform.packer === 'dpkg' || platform.packer === 'nsis' || platform.packer === 'rpmbuild' || platform.packer === 'pkgbuild') {
+    let pathAssets = path.join(buildPath, platform.paths.assets, product.service);
+
+    if (platform.packer === 'nsis') {
+      pathAssets = path.join(buildPath, platform.paths.assets);
+    }
+
+    if (platform.packer === 'pkgbuild') {
+      pathAssets = path.join(buildPath, platform.paths.assets, 'Library', product.service, 'assets');
+    }
 
     fs.ensureDirSync(pathAssets);
     
@@ -36,10 +44,6 @@ async function structAssets(buildPath, platform, proc, product) {
       }
     }
   }
-
-  if (platform.packer === 'nsis') {
-
-  } 
 }
 
 function zip(dir, path) {

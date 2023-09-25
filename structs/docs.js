@@ -57,6 +57,15 @@ async function structDocs(buildPath, platform, proc, product) {
     })
   }
 
+  if (platform.packer === 'pkgbuild') {
+    const pathApp = path.join(buildPath, platform.paths.app);
+    
+    fs.ensureDirSync(path.join(buildPath, 'resources'));
+
+    fs.writeFileSync(path.join(buildPath, 'resources', 'license.txt'), fileLicense(platform, proc, product));
+    fs.writeFileSync(path.join(pathApp, 'Library', product.service, 'license.txt'), fileLicense(platform, proc, product));
+  } 
+
   if (platform.packer === 'nsis') {
     const pathApp = path.join(buildPath, platform.paths.app);
     

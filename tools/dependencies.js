@@ -17,7 +17,6 @@ function remoteResource(resource) {
   }
 
   if (resource.url) {
-    console.log(resource.url);
     return new Promise((resolve, reject) => {
       console.log(resource.type, resource.id, '...');
 

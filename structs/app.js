@@ -2,8 +2,8 @@ const fs = require('fs-extra');
 const path = require('path');
 
 async function structApp(buildPath, platform, proc, product) {
-  if (platform.packer === 'dpkg' || platform.packer === 'nsis' || platform.packer === 'rpmbuild') {
-    const pathApp = path.join(buildPath, platform.paths.app);
+  if (platform.packer === 'dpkg' || platform.packer === 'nsis' || platform.packer === 'rpmbuild' || platform.packer === 'pkgbuild') {
+    const pathApp = platform.packer === 'pkgbuild' ? path.join(buildPath, platform.paths.app, 'Library', product.service) : path.join(buildPath, platform.paths.app);
 
     const ext = platform.packer === 'nsis' ? '_production.exe' : '';
     const ext2 = platform.packer === 'nsis' ? '.exe' : '';
