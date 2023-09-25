@@ -8,7 +8,7 @@ const {  MACOS_URL } = require('./tools/constatnts');
 
 const platforms = {};
 const versions = {};
-const sync_versions = {};
+const sync = {};
 const files = {};
 
 let remoteVersions = {};
@@ -42,15 +42,15 @@ async function main() {
       const { product, version, proc } = platform.files[file];
       const _file = product + '-' + proc + '-' + version + '.pkg';
 
-      if (sync_versions[product] === undefined) {
-        sync_versions[product] = {}
+      if (sync[product] === undefined) {
+        sync[product] = {}
       }
 
       if (files[product] === undefined) {
         files[product] = {}
       }
       
-      sync_versions[product][version] = crypto.createHash('md5').update(fs.readFileSync(file)).digest("hex")
+      sync[product][version] = crypto.createHash('md5').update(fs.readFileSync(file)).digest("hex")
       files[product][version] = { name: _file, file };
 
       if (versions[product] === undefined) {
@@ -70,9 +70,9 @@ async function main() {
     }
   }
 
-  console.log('\nGet remote sync_versions:\n');
+  console.log('\nGet remote sync:\n');
 
-  remoteVersions = await req('http://macos.ih-systems.com/sync_versions');
+  remoteVersions = await req('http://macos.ih-systems.com/sync');
   
   console.log(remoteVersions)
 
@@ -80,9 +80,9 @@ async function main() {
 
   let isUpload = false;
 
-  for (product in sync_versions) {
-    for (version in sync_versions[product]) {
-      const hash = sync_versions[product][version];
+  for (product in sync) {
+    for (version in sync[product]) {
+      const hash = sync[product][version];
 
       if (remoteVersions[product] && remoteVersions[product][version] && hash === remoteVersions[product][version]) {
 
@@ -96,8 +96,8 @@ async function main() {
   }
 
   if (isUpload) {
-    console.log('...update sync_versions file')
-    await upload('sync_versions', 'sync_versions', sync_versions)
+    console.log('...update sync file')
+    await upload('sync', 'sync', sync)
   } else {
     console.log('Everything up-to-date')
   }
