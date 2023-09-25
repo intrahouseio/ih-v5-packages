@@ -5,6 +5,7 @@ const RPM_REPO_DIR = '@repositories/rpm';
 
 const DEB_URL = 'http://deb.ih-systems.com'
 const RPM_URL = 'http://rpm.ih-systems.com'
+const MACOS_URL = 'http://macos.ih-systems.com'
 
 const VERSION_EMPTY = '5.11.12';
 
@@ -33,6 +34,7 @@ module.exports = {
   RPM_REPO_DIR,
   DEB_URL,
   RPM_URL,
+  MACOS_URL,
   VERSION_EMPTY,
   PRODUCT_SITES,
   PRODUCT_DESCRIPTIONS,
