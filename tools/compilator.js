@@ -89,68 +89,77 @@ async function compilator(platform, proc, product) {
   }
 
   if (platform.packer === 'pkgbuild') {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+      const pathApp = path.join(buildPath, platform.paths.app);
+      
       const cwd = buildPath;
       const version = global.__versions ? global.__versions[product.name] : VERSION_EMPTY;
 
-      const cp = spawn('pkgbuild', [
-        '--identifier', `"ru.${product.name}.client"`,
+      await cmd('codesign', [
+        '--entitlements', path.join(pathApp, 'Library', product.service, product.service + '.plist'),
+        '--deep', '-vvv', '-f',
+        '--options=runtime', '--force',
+        '-s', 'Developer ID Application: Vladimir Maltsev (TP2HW42PBJ)',
+        path.join(pathApp, 'Library', product.service, product.service)
+      ], cwd);
+
+      await cmd('pkgbuild', [
+        '--identifier', `"ru.${product.name}.server"`,
         '--version', `"${version}"`,
         '--scripts', './scripts', 
         '--root', './app',
         `./temp/${product.name}.pkg`,
-      ], { cwd });
+      ], cwd);
 
-      cp.stdout.on('data', function(data) {
-        console.log(data.toString());
-      });
-    
-      cp.stderr.on('data', function(data) {
-        console.log(data.toString());
-      });
-    
-      cp.on('exit', function(code) {
-        const cp2 = spawn('productbuild', [
-          '--distribution', './distribution',
-          '--resources', './resources', 
-          '--package-path', './temp', 
-          `./${product.name}.pkg`,
-        ], { cwd });
-  
-        cp2.stdout.on('data', function(data) {
-          console.log(data.toString());
-        });
+      await cmd('productbuild', [
+        '--distribution', './distribution',
+        '--resources', './resources', 
+        '--package-path', './temp', 
+        `./${product.name}.pkg`,
+      ], cwd);
+
+      await cmd('productsign', [
+        '--sign', 'Developer ID Installer: Vladimir Maltsev (TP2HW42PBJ)',
+        `./${product.name}.pkg`,
+        `./${product.name}_sign.pkg`,
+      ], cwd);
       
-        cp2.stderr.on('data', function(data) {
-          console.log(data.toString());
-        });
-      
-        cp2.on('exit', function(code) {
-          const cp3 = spawn('productsign', [
-            '--sign', 'Developer ID Installer: Vladimir Maltsev (TP2HW42PBJ)',
-            `./${product.name}.pkg`,
-            `./${product.name}_sign.pkg`,
-          ], { cwd });
-    
-          cp3.stdout.on('data', function(data) {
-            console.log(data.toString());
-          });
-        
-          cp3.stderr.on('data', function(data) {
-            console.log(data.toString());
-          });
-        
-          cp3.on('exit', function(code) {
-            const src = path.join(buildPath, product.name + '_sign.pkg');
-            const dst = path.join(process.cwd(), (isBeta ? path.join('@builds', 'pkg', 'beta') : path.join('@builds', 'pkg', 'stable')), `${platform.name}_${product.name}_${version}_${proc.arch}.pkg`);
-         
-            fs.moveSync(src, dst, { overwrite: true });
-            resolve();
-          });
-        });
-      });
+      console.log('notarytool', process.env.APPLEID, process.env.APPLEIDPASS)
+
+      await cmd('xcrun', [
+        'notarytool', 'submit',
+        `./${product.name}_sign.pkg`,
+        '--apple-id' , process.env.APPLEID,
+        '--password', process.env.APPLEIDPASS,
+        '--team-id', 'TP2HW42PBJ',
+        '--wait'
+      ], cwd);
+
+      const src = path.join(buildPath, product.name + '_sign.pkg');
+      const dst = path.join(process.cwd(), (isBeta ? path.join('@builds', 'pkg', 'beta') : path.join('@builds', 'pkg', 'stable')), `${platform.name}_${product.name}_${version}_${proc.arch}.pkg`);
+
+      fs.moveSync(src, dst, { overwrite: true });
+      resolve();
     });
   }
+}
+
+function cmd(command, params, cwd) {
+  return new Promise(resolve => {
+    const cp = spawn(command, params, { cwd });
+  
+    cp.stdout.on('data', function(data) {
+      console.log(data.toString());
+    });
+  
+    cp.stderr.on('data', function(data) {
+      console.log(data.toString());
+    });
+  
+    cp.on('exit', function(code) {
+      resolve();
+    });
+  });
 }
 
 module.exports = compilator;

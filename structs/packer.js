@@ -11,7 +11,7 @@ const filePrerm = require('../files/prerm');
 
 const fileSetupNSI = require('../files/setupNSI');
 const fileSpec = require('../files/spec');
-
+const filePlist2 = require('../files/plist2');
 const fileDistribution = require('../files/distribution');
 
 async function structPacker(buildPath, platform, proc, product) {
@@ -39,9 +39,12 @@ async function structPacker(buildPath, platform, proc, product) {
   } 
 
   if (platform.packer === 'pkgbuild') {
+    const pathApp = path.join(buildPath, platform.paths.app);
+    
     fs.ensureDirSync(path.join(buildPath, 'scripts'));
     fs.ensureDirSync(path.join(buildPath, 'temp'));
 
+    fs.writeFileSync(path.join(pathApp, 'Library', product.service, product.service + '.plist'), filePlist2(platform, proc, product));
     fs.writeFileSync(path.join(buildPath, 'scripts', 'postinstall'), filePostinst2(platform, proc, product), { mode: 0755 });
     fs.writeFileSync(path.join(buildPath, 'distribution'), fileDistribution(buildPath, platform, proc, product));
   } 
