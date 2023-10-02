@@ -287,9 +287,12 @@ async function main () {
   
   fs.removeSync(path.join('@repositories', 'rpm', 'redhat', 'stable'));
   
+  console.log('...publish');
   
   await cmd_exec('sudo node publish_deb', process.cwd());  
-  await cmd_exec('sudo node publish_rpm', process.cwd());    
+  await cmd_exec('sudo node publish_rpm', process.cwd());  
+
+  console.log('\nComplete!');
 }
 
 
@@ -302,7 +305,7 @@ function cmd_exec(str, cwd) {
       resolve();
     })
     cp.stdout.on('data', function(data) {
-      console.log(data); 
+      // console.log(data); 
     });
     cp.stderr.on('data', function (data) {
       //console.log(data);
