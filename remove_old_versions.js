@@ -1,5 +1,6 @@
 const fs = require('fs-extra');
 const path = require('path');
+const { exec } = require('child_process');
 
 const semverCompare = require('semver/functions/compare')
 const semverParse = require('semver/functions/parse')
