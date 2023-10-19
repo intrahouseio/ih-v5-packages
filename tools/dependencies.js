@@ -85,7 +85,7 @@ function remoteResource(resource) {
 
 function remoteResourceBeta(resource) {
   return new Promise((resolve, reject) => {
-    request({ url: `https://update.ih-systems.com/restapi/version?id=${resource.id}_v5` }, async (err, res, body) => {
+    request({ url: `https://update.ih-systems.com/restapi/version?id=${resource.id}_v5&force=1` }, async (err, res, body) => {
       try {
         const json = JSON.parse(body);
 
