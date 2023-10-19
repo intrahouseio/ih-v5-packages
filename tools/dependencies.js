@@ -32,13 +32,13 @@ function remoteResource(resource) {
   return new Promise((resolve, reject) => {
     const url = 'https://api.github.com/repos/intrahouseio/' + (resource.repo || resource.id) + '/releases/' + (resource.tag ? 'tags/' + resource.tag : 'latest');
     console.log(resource.type, resource.id, '...');
-
+    
     request({ url, headers }, async (err, res, body) => {
       try {
         const json = JSON.parse(body);
         const file = resource.asset ? json.assets.find(i => i.name === resource.asset).id : json.zipball_url;
         const hash = (resource.asset ? json.assets.find(i => i.name === resource.asset).updated_at : json.node_id).replace(/\:/g, '');
-   
+        
         if (resource.type === 'product') {
           if (global.__versions === undefined) {
             global.__versions = {};
@@ -91,33 +91,74 @@ function remoteResourceBeta(resource) {
     headers.Accept = 'application/vnd.github.v3.raw';
   }
 
+  if (resource.url) {
+    return new Promise((resolve, reject) => {
+      console.log(resource.type, resource.id, '...');
+
+      request.get({ url: resource.url, headers })
+        .pipe(unzipper.Extract({ path: path.join('resources', resource.id ) }))
+        .on('finish', () => {
+          console.log(resource.type, resource.id, 'ok');
+          resolve();
+        });   
+    });
+  }
+
   return new Promise((resolve, reject) => {
-    request({ url: `https://update.ih-systems.com/restapi/version?id=${resource.id}_v5&force=1` }, async (err, res, body) => {
-      try {
-        const json = JSON.parse(body);
+    request({ url: `https://update.ih-systems.com/restapi/version?id=${resource.id}_v5&force=1` }, async (err, res, body3) => {
+      const json = JSON.parse(body3);
+      const tag = json.data.payload.beta_version;
 
-        console.log(resource.type, resource.file, '...');
+      const url = 'https://api.github.com/repos/intrahouseio/' + (resource.repo || resource.id) + '/releases/' + (true ? 'tags/' + tag : 'latest');
+      console.log(resource.type, resource.id, '...');
 
-        if (global.__versions === undefined) {
-          global.__versions = {};
-        }
+      request({ url, headers }, async (err, res, body) => {
+        try {
+          const json = JSON.parse(body);
+          const file = resource.asset ? json.assets.find(i => i.name === resource.asset).id : json.zipball_url;
+          const hash = (resource.asset ? json.assets.find(i => i.name === resource.asset).updated_at : json.node_id).replace(/\:/g, '');
 
-        global.__versions[resource.id] = json.data.payload.beta_version.replace('v', '').trim();
-
-        if (fs.pathExistsSync(path.join('resources', resource.file))) {
-          await fs.remove(path.join('resources', resource.file));
-        }
-
-        request.get({ url: json.data.payload.beta_url, headers })
-          .pipe(unzipper.Extract({ path: path.join('resources', resource.file ) }))
-          .on('finish', () => {
-            console.log(resource.type, resource.file, 'ok');
+          if (resource.type === 'product') {
+            if (global.__versions === undefined) {
+              global.__versions = {};
+            }
+            global.__versions[resource.id] = json.tag_name.replace('v', '').trim();
+          }
+  
+          async function end() {
+            await fs.writeFile(path.join('resources', resource.id + '_beta' + '_' + hash), '');
+      
+            console.log(resource.type, resource.id, 'ok');
+            
             resolve();
-          });   
-      } catch (e) {
-        console.log(e);
-        reject(e);
-      }
+          }
+  
+          if (fs.pathExistsSync(path.join('resources', resource.id)) && fs.pathExistsSync(path.join('resources', resource.id + '_beta' + '_' + hash))) {
+            console.log(resource.type, resource.id, 'ok');
+            resolve();
+          } else {   
+            await fs.remove(path.join('resources', resource.id));
+   
+            if (resource.zip === 'tgz') {
+              await fs.ensureDir(path.join('resources', resource.id));
+              await request.get({ url: file, headers })
+                .pipe(zlib.Unzip())
+                .pipe(tar.extract({ cwd: path.join(process.cwd(), 'resources', resource.id) })) 
+                .on('finish', end);   
+            } else {
+              if (resource.asset) {
+                headers.Accept = 'application/octet-stream';
+              }
+              await request.get({ url: resource.asset ? ` https://api.github.com/repos/intrahouseio/ih-v5/releases/assets/${file}`: file, headers })
+                .pipe(unzipper.Extract({ path: path.join('resources', resource.id + '_beta' ) }))
+                .on('finish', end);   
+            }
+          }
+        } catch(e) {
+          console.log(e);
+          reject(e);
+        }
+      });
     });
   });
 }
@@ -168,8 +209,8 @@ async function dependencies(options) {
   fs.ensureDirSync(path.join('resources'))
 
   if (isBeta) {
-    await remoteResourceBeta({ id: 'intrahouse', type: 'product', file: 'intrahouse_beta' });
-    await remoteResourceBeta({ id: 'intrascada', type: 'product', file: 'intrascada_beta' });
+    await remoteResourceBeta({ id: 'intrahouse', type: 'product', repo: 'ih-v5', asset: 'intrahouse.zip' });
+    await remoteResourceBeta({ id: 'intrascada', type: 'product', repo: 'ih-v5', asset: 'intrascada.zip' });
   
   } else {
     await remoteResource({ id: 'intrahouse', type: 'product', repo: 'ih-v5', asset: 'intrahouse.zip' });
