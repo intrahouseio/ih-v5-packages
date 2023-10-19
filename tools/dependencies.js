@@ -84,6 +84,13 @@ function remoteResource(resource) {
 }
 
 function remoteResourceBeta(resource) {
+  const headers =  { 'User-Agent': 'Mozilla/5.0' };
+
+  if (fs.existsSync(path.join(process.cwd(), 'github.token'))) {
+    headers.Authorization = 'token ' + fs.readFileSync(path.join(process.cwd(), 'github.token'), 'utf8');
+    headers.Accept = 'application/vnd.github.v3.raw';
+  }
+
   return new Promise((resolve, reject) => {
     request({ url: `https://update.ih-systems.com/restapi/version?id=${resource.id}_v5&force=1` }, async (err, res, body) => {
       try {
@@ -101,7 +108,7 @@ function remoteResourceBeta(resource) {
           await fs.remove(path.join('resources', resource.file));
         }
 
-        request.get({ url: json.data.payload.beta_url })
+        request.get({ url: json.data.payload.beta_url, headers })
           .pipe(unzipper.Extract({ path: path.join('resources', resource.file ) }))
           .on('finish', () => {
             console.log(resource.type, resource.file, 'ok');
