@@ -16,8 +16,8 @@ const options = [
       { id: 'armhf', alias: 'armv7'  },
     ] 
   },
-  { repo: 'deb', dir: 'jethome', path: '/pool/stable/', ext: 'deb', arch: [{ id: 'arm64', alias: 'arm64'  }] },
-  { repo: 'deb', dir: 'wirenboard', path: '/pool/stable/', ext: 'deb', arch: [{ id: 'armhf', alias: 'armv7'  }] },
+  { repo: 'deb', dir: 'jethome', path: '/pool/stable/', ext: 'deb', arch: [{ id: 'arm64', alias: 'arm64' }] },
+  { repo: 'deb', dir: 'wirenboard', path: '/pool/stable/', ext: 'deb', arch: [{ id: 'armhf', alias: 'armv7' }, { id: 'arm64', alias: 'arm64' }] },
   { 
     repo: 'rpm', 
     dir: 'redhat', 
