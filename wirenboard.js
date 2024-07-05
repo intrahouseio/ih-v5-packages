@@ -16,7 +16,10 @@ const options = {
     log: '/var/log',
     temp: '/var/lib',
   },
-  processors: [{ arch: 'armhf', target: 'linux-armv7' }],
+  processors: [
+    { arch: 'armhf', target: 'linux-armv7' },
+    { arch: 'arm64', target: 'linux-arm64' },
+  ],
   deps: {
     intrahouse: {
       plugins: [
