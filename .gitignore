@@ -2,6 +2,7 @@
 /resources
 
 /@builds
+/builds
 
 /@repositories/deb/wirenboard
 /@repositories/deb/debian
