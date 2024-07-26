@@ -209,13 +209,20 @@ async function dependencies(options) {
   fs.ensureDirSync(path.join('resources'))
 
   if (isBeta) {
-    await remoteResourceBeta({ id: 'intrahouse', type: 'product', repo: 'ih-v5', asset: 'intrahouse.zip' });
-    await remoteResourceBeta({ id: 'intrascada', type: 'product', repo: 'ih-v5', asset: 'intrascada.zip' });
-  
+    
+    if (options.products.find(i => i.name === 'intraopc')) {
+      await remoteResourceBeta({ id: 'intraopc', type: 'product', repo: 'intraopc', asset: 'intraopc.zip' });
+    } else {
+      await remoteResourceBeta({ id: 'intrahouse', type: 'product', repo: 'ih-v5', asset: 'intrahouse.zip' });
+      await remoteResourceBeta({ id: 'intrascada', type: 'product', repo: 'ih-v5', asset: 'intrascada.zip' });
+    }
   } else {
-    await remoteResource({ id: 'intrahouse', type: 'product', repo: 'ih-v5', asset: 'intrahouse.zip' });
-    await remoteResource({ id: 'intrascada', type: 'product', repo: 'ih-v5', asset: 'intrascada.zip' });
-  
+    if (options.products.find(i => i.name === 'intraopc')) {
+      await remoteResourceBeta({ id: 'intraopc', type: 'product', repo: 'intraopc', asset: 'intraopc.zip' });
+    } else {
+      await remoteResource({ id: 'intrahouse', type: 'product', repo: 'ih-v5', asset: 'intrahouse.zip' });
+      await remoteResource({ id: 'intrascada', type: 'product', repo: 'ih-v5', asset: 'intrascada.zip' });
+    }
   }
 
   await remoteResource({ id: 'node_modules', type: 'npm', repo: 'ih-v5', tag: 'v0.0.0', asset: 'node_modules_v2.zip' });
