@@ -105,7 +105,6 @@ function remoteResourceBeta(resource) {
   }
 
   return new Promise((resolve, reject) => {
-    console.log(resource.id )
     request({ url: `https://update.ih-systems.com/restapi/version?id=${resource.id === 'intraopc' ? resource.id : `${resource.id}_v5`}&force=1` }, async (err, res, body3) => {
       const json = JSON.parse(body3);
       const tag = json.data.payload.beta_version;
@@ -218,7 +217,7 @@ async function dependencies(options) {
     }
   } else {
     if (options.products.find(i => i.name === 'intraopc')) {
-      await remoteResourceBeta({ id: 'intraopc', type: 'product', repo: 'intraopc', asset: 'intraopc.zip' });
+      await remoteResource({ id: 'intraopc', type: 'product', repo: 'intraopc', asset: 'intraopc.zip' });
     } else {
       await remoteResource({ id: 'intrahouse', type: 'product', repo: 'ih-v5', asset: 'intrahouse.zip' });
       await remoteResource({ id: 'intrascada', type: 'product', repo: 'ih-v5', asset: 'intrascada.zip' });
