@@ -70,7 +70,7 @@ function remoteResource(resource) {
             if (resource.asset) {
               headers.Accept = 'application/octet-stream';
             }
-            await request.get({ url: resource.asset ? ` https://api.github.com/repos/intrahouseio/ih-v5/releases/assets/${file}`: file, headers })
+            await request.get({ url: resource.asset ? ` https://api.github.com/repos/intrahouseio/${resource.id === 'intraopc' ? resource.id : 'ih-v5'}/releases/assets/${file}`: file, headers })
               .pipe(unzipper.Extract({ path: path.join('resources', resource.id ) }))
               .on('finish', end);   
           }
