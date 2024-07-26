@@ -13,9 +13,9 @@ function fileDistribution(buildPath, platform, proc, product) {
     <installation-check script="installCheck();"/>
         <script>
 function installCheck() {
-    if(system.files.fileExistsAtPath('/Library/${(product.name === 'intrascada' ? 'intrahouse' : 'intrascada')}/')) {
+    if(system.files.fileExistsAtPath('/Library/${((product.name === 'intrascada' || product.name === 'intraopc') ? 'intrahouse' : 'intrascada')}/')) {
         my.result.title = 'Конфликт пакетов';
-        my.result.message = 'Обнаружен конфликт с пакетом ${product.name === 'intrascada' ? 'IntraHouse' : 'IntraSCADA'}, необходимо удалить конфликтующий пакет и продолжить установку!';
+        my.result.message = 'Обнаружен конфликт с пакетом ${(product.name === 'intrascada' || product.name === 'intraopc') ? 'IntraHouse' : 'IntraSCADA'}, необходимо удалить конфликтующий пакет и продолжить установку!';
         my.result.type = 'Fatal';
         return false;
     }

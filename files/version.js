@@ -14,7 +14,7 @@ function fileCopyright(platform, proc, product) {
     {
       BLOCK "040904b0"
       {
-        VALUE "CompanyName", "Intra LLC"
+        VALUE "CompanyName", "${product.name === 'intraopc' ? 'IntraOPC LLC' : 'Intra LLC'}"
         VALUE "ProductName", "${product.label}"
         VALUE "FileDescription", "${product.label}"
         VALUE "FileVersion", "${version}"

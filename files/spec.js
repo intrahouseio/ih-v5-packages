@@ -15,10 +15,10 @@ function fileSpec(buildPath, platform, proc, product) {
     // 'BuildArch: ' + proc.arch + '\n' +
     'Summary: ' + (PRODUCT_DESCRIPTIONS[product.name] || '').replace('\n', '') + '\n' +
     'URL: ' + 'https://' + PRODUCT_SITES[product.name] + '\n' +
-    'Packager: ' + 'Intra LLC' + ' <support@ih-systems.com>' + '\n' +
+    'Packager: ' + `${product.name === 'intraopc' ? 'IntraOPC' : 'Intra'} LLC` + (product.name === 'intraopc' ? ' <support@intraopc.com>' : ' <support@ih-systems.com>') + '\n' +
     'Group: Converted/misc' + '\n' +
     'Conflicts: ' + (product.name === 'intrascada' ? 'intrahouse' : 'intrascada') + '\n' +
-    'License: ' + 'Intra License' + '\n' +
+    'License: ' + `${product.name === 'intraopc' ? 'IntraOPC' : 'Intra'} License` + '\n' +
     'Requires: zip, unzip' + '\n\n' +
     '%define _rpmdir ../\n%define _rpmfilename %%{NAME}.rpm\n%define _unpackaged_files_terminate_build 0' + '\n\n' +
     '%description' + '\n' + (PRODUCT_DESCRIPTIONS2[product.name] || '') + '\n\n' +

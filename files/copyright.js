@@ -3,28 +3,28 @@ const { PRODUCT_SITES } = require('../tools/constatnts');
 function fileCopyright(platform, proc, product) {
   return (`
     Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-    Upstream-Name: Intra
+    Upstream-Name: ${product.name === 'intraopc' ? 'IntraOPC' : 'Intra'}
     Source: https://${PRODUCT_SITES[product.name]}/en/license-en/
     
     Files: *
-    Copyright: Copyright ${new Date().getFullYear()} Intra Team <support@ih-systems.com>
-    License: Intra
+    Copyright: Copyright ${new Date().getFullYear()} ${product.name === 'intraopc' ? 'IntraOPC <support@intraopc.com' : 'Intra Team <support@ih-systems.com>'}
+    License: ${product.name === 'intraopc' ? 'IntraOPC' : 'Intra'}
     
     Files: debian/*
-    Copyright: Copyright ${new Date().getFullYear()} Intra Team <support@ih-systems.com>
-    License: Intra
+    Copyright: Copyright ${new Date().getFullYear()} ${product.name === 'intraopc' ? 'IntraOPC <support@intraopc.com>' : 'Intra Team <support@ih-systems.com>'}
+    License: ${product.name === 'intraopc' ? 'IntraOPC' : 'Intra'}
     
-    License: Intra
+    License: ${product.name === 'intraopc' ? 'IntraOPC' : 'Intra'}
     CAREFULLY READ THE FOLLOWING LEGAL AGREEMENT (“LICENSE”) BEFORE YOU START USING THE SOFTWARE. YOU EXPRESSLY CONSENT TO BE BOUND BY THE TERMS AND CONDITIONS OF THIS LICENSE. IF YOU DO NOT AGREE TO THE TERMS OF THIS LICENSE, DO NOT INSTALL AND DO NOT USE THE SOFTWARE AND, IF PRESENTED WITH THE OPTION TO “ACCEPT” OR “DO NOT ACCEPT”, CLICK “DO NOT ACCEPT”.
     
     1. Definitions
-    1.1 Software means software, license key, related materials and updates all rights to which are owned by Intra LLC.
-    1.2 Rightholder (owner of exclusive rights to the Software) means Intra LLC.
+    1.1 Software means software, license key, related materials and updates all rights to which are owned by ${product.name === 'intraopc' ? 'IntraOPC' : 'Intra'} LLC.
+    1.2 Rightholder (owner of exclusive rights to the Software) means ${product.name === 'intraopc' ? 'IntraOPC' : 'Intra'} LLC.
     1.3 Computer means hardware for which the Software was designed where the Software will be installed and/or used.
     1.4 End User (You/Your) means individual(s) installing or using the Software on their own behalf or who are legally using a copy of the Software; or, if the Software is being downloaded or installed on behalf of an organization, End User (You) further means the organization for which the Software is downloaded or installed and it is represented hereby that such organization has authorized the person accepting this agreement to do so on its behalf.
     1.5 Partner(s) means organization(s) that distribute the Software based on an agreement with the Rightholder.
     1.6 Update(s) means all upgrades, revisions, patches, enhancements, fixes, additions and/or modifications of the Software.
-    1.7 Documentation means accompanying printed and other materials, user manual, configuration guide, reference books, help files and similar printed and electronic documents, the rights to which are owned by Intra LLC. The on-line version of the User Manual is available on the Rightholder website www.intrahouse.eu and may be updated when necessary.
+    1.7 Documentation means accompanying printed and other materials, user manual, configuration guide, reference books, help files and similar printed and electronic documents, the rights to which are owned by ${product.name === 'intraopc' ? 'IntraOPC' : 'Intra'} LLC. The on-line version of the User Manual is available on the Rightholder website www.${PRODUCT_SITES[product.name]} and may be updated when necessary.
     1.8 Personal account – a page on the Rightholder's web site for the Software registration, download and update.
     2. General
     2.1 Subject to your full and ongoing compliance with the terms and conditions of this License, the Rightholder hereby grants to you, and you accept, a limited, nonexclusive license to use the Software. If you have received, downloaded and/or installed a trial version of the Software, you may use the Software only for evaluation purposes and only during the single applicable trial period, unless otherwise indicated, from the date of the initial installation. Any use of the Software for other purposes or beyond the applicable trial period is strictly prohibited.
@@ -56,11 +56,11 @@ function fileCopyright(platform, proc, product) {
     8.1 The Software includes some programs that are licensed (or sublicensed) to the User under the GNU General Public License (GPL) or other similar Open Source software licenses which, among other rights, permit the User to modify those programs.
     8.2 You may modify or replace only these Open Source programs, subject to the terms and conditions of respective Open Source licenses. The Rightholder does not guarantee that the modified program resulting from the Software Update will be saved. The Rightholder is not obligated to provide updates, maintenance, warranty, technical or other support, or services for such resultant modified software.
     9. Applicable Law
-    9.1 This License Agreement shall be governed by the laws of the Russian Federation.
+    9.1 This License Agreement shall be governed by the laws of the ${product.name === 'intraopc' ? 'country of company' : 'Russian Federation'}.
     9.2 If any term or provision of this License is declared void or unenforceable in a particular situation, by any judicial or administrative authority, this declaration shall not affect the validity or enforceability of the remaining terms and provisions hereof or the validity or enforceability of the offending term or provision in any other situation. To the extent possible the provision will be interpreted and enforced to the greatest extent legally permissible in order to effectuate the original intent of this Agreement, and if no such interpretation or enforcement is legally permissible, shall be replaced by a provision of similar legal effect.
     10. Rightholder Contact Details
-    You may contact INTRA LLC for further details about the Software and other products and services at the following website www.${PRODUCT_SITES[product.name]}
-    (c) Intra LLC, ${new Date().getFullYear()}
+    You may contact ${product.name === 'intraopc' ? 'INTRAOPC' : 'INTRA'} LLC for further details about the Software and other products and services at the following website www.${PRODUCT_SITES[product.name]}
+    (c) ${product.name === 'intraopc' ? 'IntraOPC' : 'Intra'} LLC, ${new Date().getFullYear()}
     \`/usr/share/common-licenses/GPL-3'
   `.replace(/    /g, '').trim());
 }

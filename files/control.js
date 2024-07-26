@@ -10,11 +10,11 @@ function fileControl(buildPath, platform, proc, product) {
     'Section: misc' + '\n' +
     'Priority: optional' + '\n' +
     'Architecture: ' + proc.arch + '\n' +
-    'Conflicts:' + (product.name === 'intrascada' ? 'intrahouse' : 'intrascada') + '\n' +
+    'Conflicts:' + ((product.name === 'intrascada' || product.name === 'intraopc') ? 'intrahouse' : 'intrascada') + '\n' +
     'Depends: libatomic1 (>= 4.8), libc6 (>= 2.17), libgcc1 (>= 1:3.5), libstdc++6 (>= 5.2), zip, unzip' + '\n' +
 //  'Depends: libc6 (>= 2.17), libgcc1 (>= 1:3.4), libstdc++6 (>= 5.2), zip, unzip, rsync' + '\n' +
     'Installed-Size: ' + getTotalSize(path.join(buildPath)) + '\n' +
-    'Maintainer: ' + 'Intra LLC' + ' <support@ih-systems.com>' + '\n' +
+    'Maintainer: ' + (product.name === 'intraopc' ? 'IntraOPC LLC' : 'Intra LLC') + (product.name === 'intraopc' ? ' <support@intraopc.com>' : ' <support@ih-systems.com>') + '\n' +
     'Homepage: ' + 'https://' + PRODUCT_SITES[product.name] + '\n' +
     'Description: ' + (PRODUCT_DESCRIPTIONS[product.name] || '') + '\n'
   );
