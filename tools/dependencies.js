@@ -105,7 +105,7 @@ function remoteResourceBeta(resource) {
   }
 
   return new Promise((resolve, reject) => {
-    request({ url: `https://update.ih-systems.com/restapi/version?id=${resource.id}_v5&force=1` }, async (err, res, body3) => {
+    request({ url: `https://update.ih-systems.com/restapi/version?id=${resource.id === 'intraopc' ? resource.id : `${resource.id}_v5`}&force=1` }, async (err, res, body3) => {
       const json = JSON.parse(body3);
       const tag = json.data.payload.beta_version;
 
