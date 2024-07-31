@@ -227,7 +227,11 @@ async function dependencies(options) {
   await remoteResource({ id: 'node_modules', type: 'npm', repo: 'ih-v5', tag: 'v0.0.0', asset: 'node_modules_v2.zip' });
 
   for (const project in projects) {
-    await remoteResource({ id: project, type: 'project', url: 'https://raw.githubusercontent.com/intrahouseio/ih-v5/main/projects/' + project });
+    if (options.products.find(i => i.name === 'intraopc')) {
+      await remoteResource({ id: project, type: 'project', url: `https://raw.githubusercontent.com/intrahouseio/intraopc/main/projects/` + project });
+    } else {
+      await remoteResource({ id: project, type: 'project', url: `https://raw.githubusercontent.com/intrahouseio/ih-v5/main/projects/` + project });
+    }
   }
 
   for (const resourceType in deps) {

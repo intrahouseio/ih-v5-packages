@@ -5,7 +5,7 @@ const options = {
   name: 'debian',
   packer: 'dpkg',
   products: [
-    { name: 'intraopc', service: 'intraopc', project: 'intrascada.ihpack' },
+    { name: 'intraopc', service: 'intraopc', project: 'intraopc.ihpack' },
   ],
   paths: {
     app: '/usr/bin',
