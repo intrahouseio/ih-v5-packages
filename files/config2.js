@@ -4,7 +4,7 @@ function fileConfig2(platform, proc, product) {
   return JSON.stringify({
     name_service: product.service,
     lang: 'ru',
-    port: 8088,
+    port: product.name === 'intraopc' ? 8077 : 8088,
     vardir: `/var/lib`,
     assets: `/Library/${product.service}/assets`,
     log: '/var/log',
