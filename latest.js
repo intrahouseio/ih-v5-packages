@@ -52,6 +52,9 @@ for (const item of options) {
     fs.ensureDirSync(path.join('@repositories', item.repo, item.dir, 'latest', product));
 
     const folder = path.join('@repositories', item.repo, item.dir, item.path, product);
+    if (!fs.pathExistsSync(folder)) {
+      return;
+    }
     const list = fs.readdirSync(folder);
     
     const version = getLatestVersion(list, item.ext);
