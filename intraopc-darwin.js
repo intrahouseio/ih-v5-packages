@@ -5,7 +5,7 @@ const options = {
   name: 'darwin',
   packer: 'pkgbuild',
   products: [
-    { name: 'intraopc', service: 'intraopc', project: 'intraopc.ihpack' },
+    { name: 'intraopc', service: 'intraopc', label: 'IntraOPC', project: 'intraopc.ihpack' },
   ],
   paths: {
     app: '/app',
