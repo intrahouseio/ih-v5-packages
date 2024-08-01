@@ -1,24 +1,18 @@
 const builder = require('./tools/builder');
 
 const options = {
-  url_server: 'http://deb.ih-systems.com/versions',
-  name: 'debian',
-  packer: 'dpkg',
+  name: 'windows',
+  packer: 'nsis',
   products: [
     { name: 'intraopc', service: 'intraopc', project: 'intraopc.ihpack' },
   ],
   paths: {
-    app: '/usr/bin',
-    lib: '/var/lib',
-    assets: '/usr/share',
-    wd: '/etc',
-    log: '/var/log',
-    temp: '/var/lib',
+    app: '/app',
+    assets: '/app/assets',
+    tools: '/app/tools',
   },
   processors: [
-    { arch: 'armhf', target: 'linux-armv7' },
-    { arch: 'arm64', target: 'linux-arm64' },
-    { arch: 'amd64', target: 'linux-x64' },
+    { arch: 'x64', target: 'win-x64' },
   ],
   deps: {
     intraopc: {

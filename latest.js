@@ -2,7 +2,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const semverLt = require('semver/functions/lt');
 
-const products = ['intrascada', 'intrahouse'];
+const products = ['intrascada', 'intrahouse', 'intraopc'];
 
 const options = [
   { 

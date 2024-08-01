@@ -2,7 +2,7 @@ const builder = require('./tools/builder');
 
 const options = {
   url_server: 'http://deb.ih-systems.com/versions',
-  name: 'debian',
+  name: 'jethome',
   packer: 'dpkg',
   products: [
     { name: 'intraopc', service: 'intraopc', project: 'intraopc.ihpack' },
@@ -16,9 +16,7 @@ const options = {
     temp: '/var/lib',
   },
   processors: [
-    { arch: 'armhf', target: 'linux-armv7' },
     { arch: 'arm64', target: 'linux-arm64' },
-    { arch: 'amd64', target: 'linux-x64' },
   ],
   deps: {
     intraopc: {

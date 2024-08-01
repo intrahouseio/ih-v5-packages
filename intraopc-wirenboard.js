@@ -2,14 +2,14 @@ const builder = require('./tools/builder');
 
 const options = {
   url_server: 'http://deb.ih-systems.com/versions',
-  name: 'debian',
+  name: 'wirenboard',
   packer: 'dpkg',
   products: [
     { name: 'intraopc', service: 'intraopc', project: 'intraopc.ihpack' },
   ],
   paths: {
     app: '/usr/bin',
-    lib: '/var/lib',
+    lib: '/mnt/data/var/lib',
     assets: '/usr/share',
     wd: '/etc',
     log: '/var/log',
@@ -18,7 +18,6 @@ const options = {
   processors: [
     { arch: 'armhf', target: 'linux-armv7' },
     { arch: 'arm64', target: 'linux-arm64' },
-    { arch: 'amd64', target: 'linux-x64' },
   ],
   deps: {
     intraopc: {

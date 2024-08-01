@@ -1,9 +1,9 @@
 const builder = require('./tools/builder');
 
 const options = {
-  url_server: 'http://deb.ih-systems.com/versions',
-  name: 'debian',
-  packer: 'dpkg',
+  url_server: 'http://rpm.ih-systems.com/versions',
+  name: 'redhat',
+  packer: 'rpmbuild',
   products: [
     { name: 'intraopc', service: 'intraopc', project: 'intraopc.ihpack' },
   ],
@@ -16,9 +16,9 @@ const options = {
     temp: '/var/lib',
   },
   processors: [
-    { arch: 'armhf', target: 'linux-armv7' },
-    { arch: 'arm64', target: 'linux-arm64' },
-    { arch: 'amd64', target: 'linux-x64' },
+    { arch: 'aarch64', target: 'linux-arm64' },
+    { arch: 'x86_64', target: 'linux-x64' },
+    { arch: 'armv7hl', target: 'linux-armv7' },
   ],
   deps: {
     intraopc: {
