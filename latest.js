@@ -52,43 +52,42 @@ for (const item of options) {
     fs.ensureDirSync(path.join('@repositories', item.repo, item.dir, 'latest', product));
 
     const folder = path.join('@repositories', item.repo, item.dir, item.path, product);
-    if (!fs.pathExistsSync(folder)) {
-      return;
-    }
-    const list = fs.readdirSync(folder);
+    if (fs.pathExistsSync(folder)) {
+      const list = fs.readdirSync(folder);
+      
+      const version = getLatestVersion(list, item.ext);
+
+      for (const arch of item.arch) {
+        if (item.ext === 'deb' || item.ext === 'rpm') {
+          const prefix1 = item.ext === 'rpm' ? '-' : '_';
+          const prefix2 = item.ext === 'rpm' ? '-1.' : '_';
     
-    const version = getLatestVersion(list, item.ext);
-
-    for (const arch of item.arch) {
-      if (item.ext === 'deb' || item.ext === 'rpm') {
-        const prefix1 = item.ext === 'rpm' ? '-' : '_';
-        const prefix2 = item.ext === 'rpm' ? '-1.' : '_';
-  
-        const file1 = `${product}${prefix1}${version}${prefix2}${arch.id}.${item.ext}`;
-        const file2 = `${product}_${arch.alias}.${item.ext}`
-   
-        const src = path.join(process.cwd(),'@repositories', item.repo, item.dir, item.path, product, version, file1);
-        const dst = path.join(process.cwd(), '@repositories', item.repo, item.dir, 'latest', product, file2);
-        
-        if (fs.existsSync(src)) {
-          console.log(item.dir.padEnd(10, ' '), file2.padEnd(26, ' '), version);
-          fs.symlinkSync(src, dst, 'file');
+          const file1 = `${product}${prefix1}${version}${prefix2}${arch.id}.${item.ext}`;
+          const file2 = `${product}_${arch.alias}.${item.ext}`
+    
+          const src = path.join(process.cwd(),'@repositories', item.repo, item.dir, item.path, product, version, file1);
+          const dst = path.join(process.cwd(), '@repositories', item.repo, item.dir, 'latest', product, file2);
+          
+          if (fs.existsSync(src)) {
+            console.log(item.dir.padEnd(10, ' '), file2.padEnd(26, ' '), version);
+            fs.symlinkSync(src, dst, 'file');
+          }
         }
-      }
 
-      if (item.ext === 'exe' || item.ext === 'pkg') {
-        const prefix1 = '-';
-        const prefix2 = '-';
-  
-        const file1 = `${product}${prefix1}${arch.id}${prefix2}${version}.${item.ext}`;
-        const file2 = `${product}_${arch.alias}.${item.ext}`
-   
-        const src = path.join(process.cwd(),'@repositories', item.repo, item.dir, item.path, product, file1);
-        const dst = path.join(process.cwd(), '@repositories', item.repo, item.dir, 'latest', product, file2);
-       
-        if (fs.existsSync(src)) {
-          console.log(item.repo.padEnd(10, ' '), file2.padEnd(26, ' '), version);
-          fs.symlinkSync(src, dst, 'file');
+        if (item.ext === 'exe' || item.ext === 'pkg') {
+          const prefix1 = '-';
+          const prefix2 = '-';
+    
+          const file1 = `${product}${prefix1}${arch.id}${prefix2}${version}.${item.ext}`;
+          const file2 = `${product}_${arch.alias}.${item.ext}`
+    
+          const src = path.join(process.cwd(),'@repositories', item.repo, item.dir, item.path, product, file1);
+          const dst = path.join(process.cwd(), '@repositories', item.repo, item.dir, 'latest', product, file2);
+        
+          if (fs.existsSync(src)) {
+            console.log(item.repo.padEnd(10, ' '), file2.padEnd(26, ' '), version);
+            fs.symlinkSync(src, dst, 'file');
+          }
         }
       }
     }
