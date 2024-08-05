@@ -138,7 +138,7 @@ Section "-hidden app"
    
   ${Else}
     StrCpy $0 $WINDIR 1
-    ${StrRep} '$1' '{"name_service":"${APPFILE}", "lang":"ru", "port":8088, "vardir":"$0:\ProgramData\${SERVICE_NAME}", "assets":"$PROGRAMFILES64\${SERVICE_NAME}\assets", "log":"$PROGRAMFILES64\${SERVICE_NAME}\log", "temp":"$PROGRAMFILES64\${SERVICE_NAME}\temp", "zip":"$PROGRAMFILES64\${SERVICE_NAME}\tools\7z.exe", "unzip":"$PROGRAMFILES64\${SERVICE_NAME}\tools\7z.exe"}' '\' '\\'
+    ${StrRep} '$1' '{"name_service":"${APPFILE}", "lang":"ru", "port":${PORT}, "vardir":"$0:\ProgramData\${SERVICE_NAME}", "assets":"$PROGRAMFILES64\${SERVICE_NAME}\assets", "log":"$PROGRAMFILES64\${SERVICE_NAME}\log", "temp":"$PROGRAMFILES64\${SERVICE_NAME}\temp", "zip":"$PROGRAMFILES64\${SERVICE_NAME}\tools\7z.exe", "unzip":"$PROGRAMFILES64\${SERVICE_NAME}\tools\7z.exe"}' '\' '\\'
     FileOpen $9 "$INSTDIR\config.json" w
     FileWrite $9 "$1"
     FileClose $9
@@ -146,7 +146,7 @@ Section "-hidden app"
 
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${SERVICE_NAME}" "DisplayName" "${NAME}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${SERVICE_NAME}" "DisplayVersion" "${VERSION}"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${SERVICE_NAME}" "Publisher" "Intra LLC"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${SERVICE_NAME}" "Publisher" "${PUBLISHER}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${SERVICE_NAME}" "DisplayIcon" "$INSTDIR\logo.ico"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${SERVICE_NAME}" "UninstallString" "$INSTDIR\Uninstall.exe"
 
