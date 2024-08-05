@@ -2,6 +2,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const archiver = require('archiver');
 const { cleanupDir } = require('../tools/cleanup');
+const { signDir } = require('../tools/sign');
 
 async function structAssets(buildPath, platform, proc, product) {
   if (platform.packer === 'dpkg' || platform.packer === 'nsis' || platform.packer === 'rpmbuild' || platform.packer === 'pkgbuild') {
@@ -37,10 +38,16 @@ async function structAssets(buildPath, platform, proc, product) {
         const pathResource = path.join(process.cwd(), 'resources', resourceId, fs.readdirSync(path.join('resources', resourceId))[0]);
         const resourceFile = fs.readdirSync(pathResource).find(item => item.indexOf('.ih') !== -1);
         const resourceName = fs.readJsonSync(path.join(pathResource, resourceFile)).id;
+        const pathTarget = path.join(process.cwd(), pathAssets, assetType, resourceName);
+      
+        fs.copySync(pathResource, pathTarget);
 
-        cleanupDir(pathResource, platform, proc, product);
+        cleanupDir(pathTarget, platform, proc, product);
+
+        await signDir(pathTarget, platform, proc, product);
+        await zip(pathTarget, pathTarget + '.ihpack');
         
-        await zip(pathResource, path.join(process.cwd(), pathAssets, assetType, resourceName + '.ihpack'));
+        // fs.removeSync(pathTarget);
       }
     }
   }
