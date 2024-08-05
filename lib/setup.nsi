@@ -178,7 +178,7 @@ SectionEnd
 ;--------------------------------
 ; Section - Shortcut
 Section "Desktop Shortcut" DeskShort
-  WriteIniStr "$DESKTOP\${NAME}.url" "InternetShortcut" "URL" "http://localhost:8088"
+  WriteIniStr "$DESKTOP\${NAME}.url" "InternetShortcut" "URL" "http://localhost:${PORT}"
   WriteINIStr "$DESKTOP\${NAME}.url" "InternetShortcut" "IconFile" "$INSTDIR\logo.ico"
   WriteINIStr "$DESKTOP\${NAME}.url" "InternetShortcut" "IconIndex" "0"
 SectionEnd
