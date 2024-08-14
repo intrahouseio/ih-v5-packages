@@ -47,7 +47,7 @@ async function structAssets(buildPath, platform, proc, product) {
         await signDir(pathTarget, platform, proc, product);
         await zip(pathTarget, pathTarget + '.ihpack');
         
-        // fs.removeSync(pathTarget);
+        fs.removeSync(pathTarget);
       }
     }
   }
