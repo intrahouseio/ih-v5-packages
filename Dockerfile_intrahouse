@@ -1,0 +1,11 @@
+FROM ubuntu:22.04
+COPY setup.sh /tmp
+RUN apt update && apt install -y wget
+RUN /tmp/setup.sh
+RUN apt install -y intrahouse && apt-get clean
+VOLUME /etc/intrahouse
+VOLUME /var/lib/intrahouse
+VOLUME /var/log/intrahouse
+EXPOSE 8088 8088
+WORKDIR /etc/intrahouse
+CMD ["/usr/bin/intrahouse"] 

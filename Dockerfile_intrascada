@@ -1,0 +1,11 @@
+FROM ubuntu:22.04
+COPY setup.sh /tmp
+RUN apt update && apt install -y wget
+RUN /tmp/setup.sh
+RUN apt install -y intrascada && apt-get clean
+VOLUME /etc/intrascada
+VOLUME /var/lib/intrascada
+VOLUME /var/log/intrascada
+EXPOSE 8088 8088
+WORKDIR /etc/intrascada
+CMD ["/usr/bin/intrascada"] 

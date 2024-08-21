@@ -1,0 +1,73 @@
+#!/bin/bash
+
+print_status() {
+    echo "$1"
+}
+
+exec_cmd_nobail() {
+#    echo "+ $1"
+    bash -c "$1"
+}
+
+exec_cmd() {
+    exec_cmd_nobail "$1" || bail
+}
+
+branch="stable"
+repo="debian"
+title="Debian"
+name="ih-systems"
+keyring="/usr/share/keyrings"
+key_url="http://deb.ih-systems.com/ih-systems.gpg"
+local_key="$keyring/ih-systems.gpg"
+
+if [ "$1" == "beta" ]; then
+  branch="beta"
+fi
+
+if grep -qs "ubuntu" "/etc/os-release"; then
+  repo="ubuntu"
+  title="Ubuntu"
+fi
+
+if grep -qs "astra" "/etc/os-release"; then
+  repo="astralinux"
+  title="Astra Linux"
+fi
+
+if grep -qs "raspberry" "/proc/device-tree/compatible"; then
+  repo="raspberry"
+  title="Raspberry"
+fi
+
+if grep -qs "wirenboard" "/proc/device-tree/compatible"; then
+  repo="wirenboard"
+  title="Wiren Board"
+fi
+
+if grep -qs "jethome" "/proc/device-tree/compatible"; then
+  repo="jethome"
+  title="JetHome"
+fi
+
+print_status "Installing the ${name} repo on ${title}."
+
+print_status "Adding the ${name} signing key to your keyring..."
+
+mkdir -p "$keyring"
+
+if [ -x /usr/bin/curl ]; then
+  exec_cmd "curl -s $key_url > $local_key"
+else
+  exec_cmd "wget -q -O - $key_url > $local_key"
+fi
+
+print_status "Creating apt sources list file for the ${name} repo..."
+
+exec_cmd "echo 'deb [signed-by=$local_key] http://deb.ih-systems.com/${repo} ${branch} main' > /etc/apt/sources.list.d/${name}.list"
+
+print_status "Running \`apt-get update\` for you..."
+
+exec_cmd "apt-get update"
+
+#print_status "Run \`sudo apt install -y intrascada\` or \`sudo apt install -y intrahouse\` to install"
