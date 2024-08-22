@@ -22,7 +22,7 @@ for industrial monitoring and control systems
 set -e
 if [ ! -f "/etc/intrascada/config.json" ]; then
   mkdir -p /etc/intrascada
-  echo '{"name_service":"intrascada","lang":"ru","port":8088,"vardir":"/var/lib","assets":"/usr/share/intrascada
+  echo '{"lang":"ru","port":8088,"vardir":"/var/lib","assets":"/usr/share/intrascada
 ","log":"/var/log/intrascada","temp":"/var/lib/intrascada/temp"}' > "/etc/intrascada/config.json"
 fi
 if [ ! -n "$IH_SERVICE_ACTIVE" ]; then
