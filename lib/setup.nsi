@@ -138,7 +138,7 @@ Section "-hidden app"
    
   ${Else}
     StrCpy $0 $WINDIR 1
-    ${StrRep} '$1' '{"lang":"ru", "port":${PORT}, "vardir":"$0:\ProgramData\${SERVICE_NAME}", "assets":"$PROGRAMFILES64\${SERVICE_NAME}\assets", "log":"$PROGRAMFILES64\${SERVICE_NAME}\log", "temp":"$PROGRAMFILES64\${SERVICE_NAME}\temp", "zip":"$PROGRAMFILES64\${SERVICE_NAME}\tools\7z.exe", "unzip":"$PROGRAMFILES64\${SERVICE_NAME}\tools\7z.exe"}' '\' '\\'
+    ${StrRep} '$1' '{"lang":"ru", "port":${PORT}, "vardir":"$0:\ProgramData\${SERVICE_NAME}", "assets":"$PROGRAMFILES64\${SERVICE_NAME}\assets", "log":"$PROGRAMFILES64\${SERVICE_NAME}\log", "temp":"$PROGRAMFILES64\${SERVICE_NAME}\temp", "zip":"$PROGRAMFILES64\${SERVICE_NAME}\tools\7z.exe", "unzip":"$PROGRAMFILES64\${SERVICE_NAME}\tools\7z.exe", "rsync":"$PROGRAMFILES64\${SERVICE_NAME}\tools\rsync.exe"}' '\' '\\'
     FileOpen $9 "$INSTDIR\config.json" w
     FileWrite $9 "$1"
     FileClose $9

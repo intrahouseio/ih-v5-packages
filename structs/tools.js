@@ -14,6 +14,7 @@ async function structTools(buildPath, platform, proc, product) {
 
     fs.copyFileSync(path.join('lib', 'logo.ico'), path.join(pathApp, 'logo.ico'));
     fs.copyFileSync(path.join('lib', 'tools', '7z.exe'), path.join(pathTools, '7z.exe'));
+    fs.copySync(path.join('lib', 'tools', 'rsync'), path.join(pathTools));
   } 
 }
 
