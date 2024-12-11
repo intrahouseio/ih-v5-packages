@@ -271,7 +271,7 @@ async function main () {
           const file = pkgs.map[id].struct[minorVersion][version];
           console.log('remove: ' + file);
     
-          // fs.unlinkSync(file);
+          fs.unlinkSync(file);
         }
       }
     }
