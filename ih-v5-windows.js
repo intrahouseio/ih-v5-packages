@@ -22,7 +22,7 @@ const options = {
         'ih-v5-pushnotification-plugin', 'ih-v5-webconsole-plugin', 
         'ih-v5-chartmaker-plugin'
       ],
-      agents: ['ih-dbagent-sqlite'],
+      agents: ['ih-dbagent-sqlite', 'ih-dbagent-postgresql'],
       tools: ['ih-v5-comports-tool'],
     },
     intrascada: {
@@ -31,7 +31,7 @@ const options = {
         'ih-v5-pushnotification-plugin', 'ih-v5-webconsole-plugin', 
         'ih-v5-chartmaker-plugin', 'ih-v5-reportmaker-plugin',
       ],
-      agents: ['ih-dbagent-sqlite'],
+      agents: ['ih-dbagent-sqlite', 'ih-dbagent-postgresql'],
       tools: ['ih-v5-comports-tool'],
     }
   },
