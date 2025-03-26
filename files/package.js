@@ -13,6 +13,7 @@ function filePackage(platform, proc, product) {
           "frontend/admin/**/*",
           "frontend/user/**/*",
           "sqlite",
+          "postgresql",
           "tools/**/*",
           "plugins/p2p",
           "plugins/webconsole",
