@@ -31,6 +31,11 @@ if grep -qs "redos" "/etc/os-release"; then
   title="RED OS"
 fi
 
+if grep -qs "fedora" "/etc/os-release"; then
+  repo="fedoralinux"
+  title="Fedora Linux"
+fi
+
 if grep -qs "altlinux" "/etc/os-release"; then
   repo="altlinux"
   title="ALT Linux"
