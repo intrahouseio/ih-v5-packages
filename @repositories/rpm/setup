@@ -41,6 +41,11 @@ if grep -qs "altlinux" "/etc/os-release"; then
   title="ALT Linux"
 fi
 
+if grep -qs "rosa" "/etc/os-release"; then
+  repo="rosalinux"
+  title="Rosa Linux"
+fi
+
 print_status "Creating yum sources list file for the ${name} repo..."
 
 exec_cmd_nobail "echo -e '[${name}]\nname=${name} repository\nbaseurl=http://rpm.ih-systems.com/${repo}/${branch}\nenabled=1\ngpgcheck=1\ngpgkey=http://rpm.ih-systems.com/ih-systems.gpg' > /etc/yum.repos.d/${name}.repo"
