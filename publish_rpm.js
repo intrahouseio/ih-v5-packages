@@ -18,7 +18,13 @@ console.log('Detect files: \n');
 async function main() {
   for (const file of fs.readdirSync(isBeta ? path.join('@builds', 'rpm', 'beta') : path.join('@builds', 'rpm', 'stable'))) {
     const ext = path.extname(file);
-    const params = file.replace(ext, '').split('-1.');
+    const params = [];
+    const parse = file.replace(ext, '').split('-');
+    
+    if (parse.length === 4) {
+      params.push(parse.slice(0, -1).join('-'))
+      params.push(parse[3].slice(1))
+    }
     
     if (ext === '.rpm' && params.length === 2) {
       const [platform, product, version] = params[0].split('-');
@@ -54,7 +60,15 @@ async function main() {
             for (const _version of fs.readdirSync(path.join(RPM_REPO_DIR, platform, branch, _product))) {
               for (const file of fs.readdirSync(path.join(RPM_REPO_DIR, platform, branch, _product, _version))) {
                 const ext = path.extname(file);
-                const params = file.replace(ext, '').split('-1.');
+
+                const params = [];
+                const parse = file.replace(ext, '').split('-');
+                
+                if (parse.length === 4) {
+                  params.push(parse.slice(0, -1).join('-'))
+                  params.push(parse[3].slice(1))
+                }
+
                 const [product, version] = params[0].split('-');
                 const [proc] = params[1].split('.');
                 console.log(product, version, proc)
