@@ -23,12 +23,12 @@ async function main() {
     
     if (parse.length === 4) {
       params.push(parse.slice(0, -1).join('-'))
-      params.push(parse[3].slice(1))
+      params.push(parse[3].slice(2))
     }
     
     if (ext === '.rpm' && params.length === 2) {
       const [platform, product, version] = params[0].split('-');
-      const [proc] = params[1].split('.');
+      const proc = params[1];
 
       if (platforms[platform] === undefined) {
         platforms[platform] = { name: platform, products: {}, processors: {}, files: {} };
@@ -66,11 +66,11 @@ async function main() {
                 
                 if (parse.length === 4) {
                   params.push(parse.slice(0, -1).join('-'))
-                  params.push(parse[3].slice(1))
+                  params.push(parse[3].slice(2))
                 }
 
                 const [product, version] = params[0].split('-');
-                const [proc] = params[1].split('.');
+                const proc = params[1];
                 console.log(product, version, proc)
                 if (versions[product] === undefined) {
                   versions[product] = {};
