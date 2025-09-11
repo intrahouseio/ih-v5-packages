@@ -60,10 +60,10 @@ async function main() {
             for (const _version of fs.readdirSync(path.join(RPM_REPO_DIR, platform, branch, _product))) {
               for (const file of fs.readdirSync(path.join(RPM_REPO_DIR, platform, branch, _product, _version))) {
                 const ext = path.extname(file);
-
+                console.log(ext, file)
                 const params = [];
                 const parse = file.replace(ext, '').split('-');
-                
+             
                 if (parse.length === 4) {
                   params.push(parse.slice(0, -1).join('-'))
                   params.push(parse[3].slice(2))
