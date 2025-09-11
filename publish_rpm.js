@@ -68,7 +68,7 @@ async function main() {
                   params.push(parse.slice(0, -1).join('-'))
                   params.push(parse[3].slice(2))
                 }
-
+                console.log(params)
                 const [product, version] = params[0].split('-');
                 const proc = params[1];
                 console.log(product, version, proc)
