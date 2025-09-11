@@ -66,7 +66,7 @@ async function main() {
              
                 if (parse.length === 3) {
                   params.push(parse.slice(0, -1).join('-'))
-                  params.push(parse[3].slice(2))
+                  params.push(parse[2].slice(2))
                 }
            
                 const [product, version] = params[0].split('-');
