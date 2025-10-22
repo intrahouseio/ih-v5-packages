@@ -9,6 +9,7 @@ function filePackage(platform, proc, product) {
           "backend/locale/**/*",
           "backend/sysbase/**/*",
           "backend/lib/ih-plugin-api/**/*",
+          "backend/lib/utils/uputil.js",
           "backend/upgrade/*",
           "frontend/admin/**/*",
           "frontend/user/**/*",
